@@ -3,13 +3,15 @@
   "version": "0.1.0",
   "homepage": "https://github.com/uxrocket/uxrocket.utils",
   "authors": [
-    "Rameş Aliyev <creator@ramesaliyev.com>"
+    "Rameş Aliyev <creator@ramesaliyev.com> (http://ramesaliyev.com)"
   ],
   "description": "Missing utils/helpers library for javascript.",
   "keywords": [
     "utils",
     "helpers",
-    "lodash"
+    "lodash",
+    "underscore",
+    "toolkit"
   ],
   "license": "MIT",
   "ignore": [
@@ -23,5 +25,9 @@
     "grunt-tasks",
     "src",
     "build"
-  ]
+  ],
+  "main": "dist/uxrocket.utils.js",
+  "dependencies": {
+    "lodash": "^2.4.1"
+  }
 }

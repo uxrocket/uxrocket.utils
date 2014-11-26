@@ -24,7 +24,11 @@
     "docs",
     "grunt-tasks",
     "src",
-    "build"
+    "build",
+    "gruntfile.js",
+    "package.json",
+    "README.md",
+    "TODOS.md"
   ],
   "main": "dist/uxrocket.utils.js",
   "dependencies": {

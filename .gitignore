@@ -1,0 +1,11 @@
+# Common unwanted files and directories.
+.DS_Store
+.idea
+*.log
+
+# Packages
+node_modules
+bower_components
+
+# Other
+coverage

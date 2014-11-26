@@ -1,0 +1,143 @@
+{
+  "requireSpaceAfterKeywords": [
+    "void",
+    "return",
+    "typeof",
+    "instanceof"
+  ],
+
+  "disallowSpaceAfterKeywords": [
+    "do",
+    "for",
+    "if",
+    "switch",
+    "try",
+    "catch"
+  ],
+
+  "requireParenthesesAroundIIFE": true,
+
+  "requireSpacesInConditionalExpression": {
+    "afterTest": true,
+    "beforeConsequent": true,
+    "afterConsequent": true,
+    "beforeAlternate": true
+  },
+
+  "disallowSpacesInFunctionExpression": {
+    "beforeOpeningRoundBrace": true,
+    "beforeOpeningCurlyBrace": true
+  },
+
+  "disallowSpacesInAnonymousFunctionExpression": {
+    "beforeOpeningRoundBrace": true,
+    "beforeOpeningCurlyBrace": true
+  },
+
+  "disallowSpacesInNamedFunctionExpression": {
+    "beforeOpeningRoundBrace": true,
+    "beforeOpeningCurlyBrace": true
+  },
+
+  "disallowSpacesInFunctionDeclaration": {
+    "beforeOpeningRoundBrace": true,
+    "beforeOpeningCurlyBrace": true
+  },
+
+  "disallowSpacesInFunction": {
+    "beforeOpeningRoundBrace": true,
+    "beforeOpeningCurlyBrace": true
+  },
+
+  "requireBlocksOnNewline": 1,
+
+  "disallowEmptyBlocks": true,
+
+  "disallowSpacesInsideObjectBrackets": "all",
+
+  "disallowSpacesInsideArrayBrackets": "all",
+
+  "disallowSpacesInsideParentheses": true,
+
+  "disallowQuotedKeysInObjects": "allButReserved",
+
+  "requireSpaceBeforeObjectValues": true,
+
+  "requireCommaBeforeLineBreak": true,
+
+  "requireOperatorBeforeLineBreak": [
+    "?",
+    "=",
+    "+",
+    "-",
+    "/",
+    "*",
+    "==",
+    "===",
+    "!=",
+    "!==",
+    ">",
+    ">=",
+    "<",
+    "<="
+  ],
+
+  "disallowSpaceAfterPrefixUnaryOperators": ["++", "--", "+", "-", "~", "!"],
+
+  "disallowSpaceBeforePostfixUnaryOperators": ["++", "--"],
+
+  "requireSpaceBeforeBinaryOperators": [
+    "=",
+    "+",
+    "-",
+    "/",
+    "*",
+    "==",
+    "===",
+    "!=",
+    "!=="
+  ],
+
+  "requireSpaceAfterBinaryOperators": [
+    "=",
+    ",",
+    "+",
+    "-",
+    "/",
+    "*",
+    "==",
+    "===",
+    "!=",
+    "!=="
+  ],
+
+  "disallowImplicitTypeConversion": ["numeric", "boolean", "binary", "string"],
+
+  "requireCamelCaseOrUpperCaseIdentifiers": "ignoreProperties",
+
+  "disallowKeywords": ["with", "eval"],
+
+  "disallowMultipleLineStrings": true,
+
+  "disallowMixedSpacesAndTabs": "smart",
+
+  "disallowTrailingWhitespace": true,
+
+  "disallowTrailingComma": true,
+
+  "maximumLineLength": 140,
+
+  "requireCapitalizedConstructors": true,
+
+  "requireDotNotation": true,
+
+  "disallowYodaConditions": true,
+
+  "requireSpaceAfterLineComment": true,
+
+  "validateQuoteMarks": { "mark": true, "escape": true },
+
+  "validateIndentation": 4,
+
+  "validateParameterSeparator": ", "
+}

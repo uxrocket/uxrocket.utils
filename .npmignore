@@ -1,0 +1,28 @@
+# Common unwanted files and directories.
+.DS_Store
+.idea
+*.log
+
+# Packages
+node_modules
+bower_components
+
+# Other
+build
+coverage
+docs
+grunt-tasks
+src
+test
+
+# Config files and rest.
+.gitkeep
+.gitignore
+.jscsrc
+.jshintrc
+.travis.yml
+bower.json
+gruntfile.js
+LICENSE
+README.md
+TODOS.md

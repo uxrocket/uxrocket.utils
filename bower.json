@@ -1,0 +1,27 @@
+{
+  "name": "uxrocket.utils",
+  "version": "0.1.0",
+  "homepage": "https://github.com/uxrocket/uxrocket.utils",
+  "authors": [
+    "Rameş Aliyev <creator@ramesaliyev.com>"
+  ],
+  "description": "Missing utils/helpers library for javascript.",
+  "keywords": [
+    "utils",
+    "helpers",
+    "lodash"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests",
+    "coverage",
+    "docs",
+    "grunt-tasks",
+    "src",
+    "build"
+  ]
+}

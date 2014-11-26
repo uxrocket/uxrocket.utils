@@ -1,0 +1,24 @@
+{
+  "eqeqeq": true,
+  "undef": true,
+  "strict": true,
+  "maxparams": 4,
+  "expr": true,
+  "globals": {
+    "jQuery": true,
+    "module": true,
+    "require": true,
+    "describe": true,
+    "xdescribe": true,
+    "it": true,
+    "xit": true,
+    "expect": true,
+    "define": true,
+    "spyOn": true,
+    "beforeEach": true,
+    "exports": true,
+    "document": true,
+    "console": true,
+    "setTimeout": true
+  }
+}

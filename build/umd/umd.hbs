@@ -1,0 +1,33 @@
+/**
+    UMD Template
+    Using UMD with grunt-umd.
+    Look at build/umd/umd.hbs for more information.
+*/ {{! Not-Customized template can be found at: https://gist.github.com/ramesaliyev/6bb477ee5f42615ec8e7 }}
+(function (root, factory) {
+    /* istanbul ignore next */
+    if (typeof define === 'function' && define.amd) {
+        /** AMD. Register as an anonymous module. */
+        define([{{{amdDependencies}}}], function ({{dependencies}}) {
+            return (root['{{{globalAlias}}}'] = factory({{dependencies}}));
+        });
+    } else if (typeof exports === 'object') {
+        /**
+            Node. Does not work with strict CommonJS, but
+            only CommonJS-like enviroments that support module.exports,
+            like Node.
+        */
+        var module_exports = factory({{{cjsDependencies}}});
+        module.exports = module_exports;
+
+        /** FIX FOR BROWSERIFY: Set global alias if we in browserify. */
+        if(typeof window !== "undefined"){
+            window['{{{globalAlias}}}'] = module_exports;
+        }
+    } else {
+        /** Browser globals */
+        root['{{{globalAlias}}}'] = factory({{{globalDependencies}}});
+    }
+}(this, function ({{dependencies}}) {
+    var {{{objectToExport}}} = {{{code}}};
+    return {{{objectToExport}}};
+}));

@@ -49,16 +49,16 @@ It's because uxrocket.utils is dependent on [lodash]. And they are your usage op
 
 - **uxrocket.utils-with-lodash.js** is includes complete latest version of lodash compatible `lodash.compat.js`. And not seperates it from global scope. If you want download uxrocket.utils and lodash in same file, use it.
 
-## Documentation
+## Documentation
 For edge-automatic-generated-inline-code documentation, check [api documentation web site].
 
 - [English]
 - [Türkçe] 
 
-## Todos
+## Todos
 Please check [TODOS.md]
 
-## Changelog
+## Changelog
 Please check [CHANGELOG.md]
 
 ## License

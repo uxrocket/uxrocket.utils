@@ -1,13 +1,10 @@
-# UXRocket Utils
+# UXRocket Utils [![Build Status](https://travis-ci.org/uxrocket/uxrocket.utils.svg)](https://travis-ci.org/uxrocket/uxrocket.utils) [![GitHub version](https://badge.fury.io/gh/uxrocket%2Fuxrocket.utils.svg)](https://github.com/uxrocket/uxrocket.utils/releases) ![Coverage](http://img.shields.io/badge/coverage-100%25-brightgreen.svg)
 Missing utils/helpers library for javascript.
 
-[![Build Status](https://travis-ci.org/uxrocket/uxrocket.utils.svg)](https://travis-ci.org/uxrocket/uxrocket.utils)
-![Coverage](http://img.shields.io/badge/coverage-100%25-brightgreen.svg)
-[![Dependency Status](https://david-dm.org/uxrocket/uxrocket.utils.svg)](https://david-dm.org/uxrocket/uxrocket.utils)
-[![devDependency Status](https://david-dm.org/uxrocket/uxrocket.utils/dev-status.svg)](https://david-dm.org/uxrocket/uxrocket.utils#info=devDependencies)
-[![GitHub version](https://badge.fury.io/gh/uxrocket%2Fuxrocket.utils.svg)](https://github.com/uxrocket/uxrocket.utils/releases)
+[![Dependency Status](https://david-dm.org/uxrocket/uxrocket.utils.svg)](https://david-dm.org/uxrocket/uxrocket.utils) 
+[![devDependency Status](https://david-dm.org/uxrocket/uxrocket.utils/dev-status.svg)](https://david-dm.org/uxrocket/uxrocket.utils#info=devDependencies) 
+[![Bower version](https://badge.fury.io/bo/uxrocket.utils.svg)](http://bower.io/search/?q=uxrocket.utils) 
 [![npm version](https://badge.fury.io/js/uxrocket.utils.svg)](https://www.npmjs.org/package/uxrocket.utils)
-[![Bower version](https://badge.fury.io/bo/uxrocket.utils.svg)](http://bower.io/search/?q=uxrocket.utils)
 
 > Psst! Türkçe biliyor musun? Belki senin için daha uygun olabilir; [Türkçe Dökümantasyon].
 
@@ -17,7 +14,7 @@ Bower
 $ bower install uxrocket.utils
 ```
 
-NPM
+NPM 
 ```sh
 $ npm install uxrocket.utils
 ```
@@ -49,9 +46,27 @@ It's because uxrocket.utils is dependent on [lodash]. And they are your usage op
 
 - **uxrocket.utils-with-lodash.js** is includes complete latest version of lodash compatible `lodash.compat.js`. And not seperates it from global scope. If you want download uxrocket.utils and lodash in same file, use it.
 
+## Documentation
+For edge-automatic-generated-inline-code documentation, check [api documentation web site].
+
+- [English]
+- [Türkçe] 
+
+## TODOS
+Please check [TODOS.md]
+
+## CHANGELOG
+Please check [CHANGELOG.md]
+
 ## License
-MIT, it means; use as whatever you want.
+[MIT], it means; use as whatever you want.
 
 [release packages]:https://github.com/uxrocket/uxrocket.utils/releases
 [lodash]:https://github.com/lodash/lodash
 [Türkçe Dökümantasyon]:https://github.com/uxrocket/uxrocket.utils/blob/master/docs/turkish/README.md
+[MIT]: https://github.com/uxrocket/uxrocket.utils/blob/master/LICENSE.md
+[TODOS.md]: https://github.com/uxrocket/uxrocket.utils/blob/master/TODOS.md
+[CHANGELOG.md]: https://github.com/uxrocket/uxrocket.utils/blob/master/CHANGELOG.md
+[English]:https://github.com/uxrocket/uxrocket.utils/blob/master/docs/english/README.md
+[Türkçe]:https://github.com/uxrocket/uxrocket.utils/blob/master/docs/turkish/README.md
+[api documentation web site]: http://uxrocket.github.io/uxrocket.utils

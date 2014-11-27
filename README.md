@@ -40,7 +40,7 @@ So, why there are three type of dist file?
 - [uxrocket.utils-with-lodash.js](https://github.com/uxrocket/uxrocket.utils/blob/master/dist/uxrocket.utils-with-lodash.js)
 
 It's because uxrocket.utils is dependent on [lodash]. And they are your usage options. 
-- **uxrocket.utils.js** is single form of library which doesn't include lodash. If you already using lodash in your project. Go and use it. It gonna `require` lodash under npm and amd. In browser usages, you have to load lodash before uxrocket.utils or it gonna throw an error.
+- **uxrocket.utils.js** is single form of library which doesn't include lodash. If you already using lodash in your project; go and use it. Its gonna `require` lodash under npm and amd. In browser usages, you have to load lodash before uxrocket.utils or it gonna throw an error.
 
 - **uxrocket.utils-standalone.js** is includes lite version of lodash and seperates it from global scope. If you're not using lodash, and don't want or need to use it, or maybe you using something different library which uses global underscore `_` (like underscore.js) and you don't want to lodash ruin it; grab this file. This package has lite version of lodash which include only functions that utils is using. And seperates lodash from global scope.
 
@@ -52,10 +52,10 @@ For edge-automatic-generated-inline-code documentation, check [api documentation
 - [English]
 - [Türkçe] 
 
-## TODOS
+## Todos
 Please check [TODOS.md]
 
-## CHANGELOG
+## Changelog
 Please check [CHANGELOG.md]
 
 ## License
@@ -68,5 +68,5 @@ Please check [CHANGELOG.md]
 [TODOS.md]: https://github.com/uxrocket/uxrocket.utils/blob/master/TODOS.md
 [CHANGELOG.md]: https://github.com/uxrocket/uxrocket.utils/blob/master/CHANGELOG.md
 [English]:https://github.com/uxrocket/uxrocket.utils/blob/master/docs/english/README.md
-[Türkçe]:https://github.com/uxrocket/uxrocket.utils/blob/master/docs/turkish/README.md
+[Türkçe]:https://github.com/uxrocket/uxrocket.utils/blob/master/docs/turkish/index.md
 [api documentation web site]: http://uxrocket.github.io/uxrocket.utils

@@ -10,7 +10,7 @@ module.exports = function(grunt){
         pages: {
             options: {
                 dir   : 'docs/api',
-                remote: 'git@github.com:ramesaliyev/uxrocket.utils.git',
+                remote: 'git@github.com:uxrocket/uxrocket.utils.git',
                 branch: 'gh-pages'
             }
         }

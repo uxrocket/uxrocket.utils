@@ -1,0 +1,1254 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>uxrocket.utils.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>uxrocket.utils.js</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-comment">/**
+ *  UXRocket.Utils
+ *  Missing utils/helpers for JavaScript.
+ */</span>
+(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(root)</span></span>{
+<span class="hljs-pi">    'use strict'</span>;
+
+    <span class="hljs-comment">/** jshint in-file settings*/</span>
+    <span class="hljs-comment">/* global _ */</span>
+
+    <span class="hljs-comment">/** Ignore dependency control in coverage. */</span>
+    <span class="hljs-comment">/* istanbul ignore if */</span>
+    <span class="hljs-keyword">if</span>(<span class="hljs-keyword">typeof</span> _ === <span class="hljs-string">'undefined'</span>){
+        <span class="hljs-keyword">throw</span> <span class="hljs-string">'UXRocket Utils require Lodash.'</span>;
+    }
+
+    <span class="hljs-comment">/** Get previous binding to double underscore. */</span>
+    <span class="hljs-keyword">var</span> previousDoubleUnderscore = root.__;
+
+    <span class="hljs-comment">/** Charmap for standardise */</span>
+    <span class="hljs-keyword">var</span> standardiseMap = {
+        a   : [<span class="hljs-string">'ā'</span>, <span class="hljs-string">'ă'</span>, <span class="hljs-string">'ą'</span>],
+        A   : [<span class="hljs-string">'Ā'</span>, <span class="hljs-string">'Ă'</span>, <span class="hljs-string">'Ą'</span>],
+        c   : [<span class="hljs-string">'ç'</span>, <span class="hljs-string">'ć'</span>, <span class="hljs-string">'ĉ'</span>, <span class="hljs-string">'ċ'</span>, <span class="hljs-string">'č'</span>],
+        C   : [<span class="hljs-string">'Ç'</span>, <span class="hljs-string">'Ć'</span>, <span class="hljs-string">'Ĉ'</span>, <span class="hljs-string">'Ċ'</span>, <span class="hljs-string">'Č'</span>],
+        d   : [<span class="hljs-string">'ď'</span>, <span class="hljs-string">'đ'</span>],
+        D   : [<span class="hljs-string">'ď'</span>, <span class="hljs-string">'đ'</span>],
+        e   : [<span class="hljs-string">'ē'</span>, <span class="hljs-string">'ĕ'</span>, <span class="hljs-string">'ė'</span>, <span class="hljs-string">'ę'</span>, <span class="hljs-string">'ě'</span>],
+        E   : [<span class="hljs-string">'Ē'</span>, <span class="hljs-string">'Ĕ'</span>, <span class="hljs-string">'Ė'</span>, <span class="hljs-string">'Ę'</span>, <span class="hljs-string">'Ě'</span>],
+        g   : [<span class="hljs-string">'ğ'</span>, <span class="hljs-string">'ĝ'</span>, <span class="hljs-string">'ġ'</span>, <span class="hljs-string">'ģ'</span>],
+        G   : [<span class="hljs-string">'Ğ'</span>, <span class="hljs-string">'Ĝ'</span>, <span class="hljs-string">'Ġ'</span>, <span class="hljs-string">'Ģ'</span>],
+        h   : [<span class="hljs-string">'ĥ'</span>, <span class="hljs-string">'ħ'</span>],
+        H   : [<span class="hljs-string">'Ĥ'</span>, <span class="hljs-string">'Ħ'</span>],
+        i   : [<span class="hljs-string">'ı'</span>, <span class="hljs-string">'i'</span>, <span class="hljs-string">'ĩ'</span>, <span class="hljs-string">'ī'</span>, <span class="hljs-string">'ĭ'</span>, <span class="hljs-string">'į'</span>],
+        I   : [<span class="hljs-string">'I'</span>, <span class="hljs-string">'İ'</span>, <span class="hljs-string">'Ĩ'</span>, <span class="hljs-string">'Ī'</span>, <span class="hljs-string">'Ĭ'</span>, <span class="hljs-string">'Į'</span>],
+        j   : [<span class="hljs-string">'ĳ'</span>, <span class="hljs-string">'ĵ'</span>],
+        J   : [<span class="hljs-string">'Ĳ'</span>, <span class="hljs-string">'Ĵ'</span>],
+        k   : [<span class="hljs-string">'ķ'</span>, <span class="hljs-string">'ĸ'</span>],
+        K   : [<span class="hljs-string">'ķ'</span>, <span class="hljs-string">'ĸ'</span>],
+        l   : [<span class="hljs-string">'ĺ'</span>, <span class="hljs-string">'ļ'</span>, <span class="hljs-string">'ľ'</span>, <span class="hljs-string">'ŀ'</span>, <span class="hljs-string">'ł'</span>],
+        L   : [<span class="hljs-string">'Ĺ'</span>, <span class="hljs-string">'Ļ'</span>, <span class="hljs-string">'Ľ'</span>, <span class="hljs-string">'Ŀ'</span>, <span class="hljs-string">'Ł'</span>],
+        n   : [<span class="hljs-string">'ń'</span>, <span class="hljs-string">'ņ'</span>, <span class="hljs-string">'ň'</span>, <span class="hljs-string">'ŉ'</span>, <span class="hljs-string">'ŋ'</span>],
+        N   : [<span class="hljs-string">'Ń'</span>, <span class="hljs-string">'Ņ'</span>, <span class="hljs-string">'Ň'</span>, <span class="hljs-string">'ŉ'</span>, <span class="hljs-string">'Ŋ'</span>],
+        o   : [<span class="hljs-string">'ö'</span>, <span class="hljs-string">'ō'</span>, <span class="hljs-string">'ŏ'</span>, <span class="hljs-string">'ő'</span>, <span class="hljs-string">'œ'</span>],
+        O   : [<span class="hljs-string">'Ö'</span>, <span class="hljs-string">'Ō'</span>, <span class="hljs-string">'Ŏ'</span>, <span class="hljs-string">'Ő'</span>, <span class="hljs-string">'Œ'</span>],
+        r   : [<span class="hljs-string">'ŕ'</span>, <span class="hljs-string">'ŗ'</span>, <span class="hljs-string">'ř'</span>],
+        R   : [<span class="hljs-string">'Ŕ'</span>, <span class="hljs-string">'Ŗ'</span>, <span class="hljs-string">'Ř'</span>],
+        s   : [<span class="hljs-string">'ş'</span>, <span class="hljs-string">'ś'</span>, <span class="hljs-string">'ŝ'</span>, <span class="hljs-string">'ş'</span>, <span class="hljs-string">'š'</span>],
+        S   : [<span class="hljs-string">'Ş'</span>, <span class="hljs-string">'Ś'</span>, <span class="hljs-string">'Ŝ'</span>, <span class="hljs-string">'Ş'</span>, <span class="hljs-string">'Š'</span>],
+        t   : [<span class="hljs-string">'ţ'</span>, <span class="hljs-string">'ť'</span>, <span class="hljs-string">'ŧ'</span>],
+        T   : [<span class="hljs-string">'Ţ'</span>, <span class="hljs-string">'Ť'</span>, <span class="hljs-string">'Ŧ'</span>],
+        u   : [<span class="hljs-string">'ü'</span>, <span class="hljs-string">'ũ'</span>, <span class="hljs-string">'ū'</span>, <span class="hljs-string">'ŭ'</span>, <span class="hljs-string">'ů'</span>, <span class="hljs-string">'ű'</span>, <span class="hljs-string">'ų'</span>],
+        U   : [<span class="hljs-string">'Ü'</span>, <span class="hljs-string">'Ũ'</span>, <span class="hljs-string">'Ū'</span>, <span class="hljs-string">'Ŭ'</span>, <span class="hljs-string">'Ů'</span>, <span class="hljs-string">'Ű'</span>, <span class="hljs-string">'Ų'</span>],
+        w   : [<span class="hljs-string">'ŵ'</span>],
+        W   : [<span class="hljs-string">'Ŵ'</span>],
+        y   : [<span class="hljs-string">'ŷ'</span>, <span class="hljs-string">'Ÿ'</span>],
+        Y   : [<span class="hljs-string">'Ŷ'</span>, <span class="hljs-string">'Ÿ'</span>],
+        z   : [<span class="hljs-string">'ź'</span>, <span class="hljs-string">'ż'</span>, <span class="hljs-string">'ž'</span>],
+        Z   : [<span class="hljs-string">'Ź'</span>, <span class="hljs-string">'Ż'</span>, <span class="hljs-string">'Ž'</span>]
+    };
+
+    <span class="hljs-comment">/** Language char maps */</span>
+    <span class="hljs-keyword">var</span> languagesCharMap = {
+        turkish: {
+            lowerCase: [<span class="hljs-string">'ç'</span>, <span class="hljs-string">'ğ'</span>, <span class="hljs-string">'ı'</span>, <span class="hljs-string">'i'</span>, <span class="hljs-string">'ö'</span>, <span class="hljs-string">'ş'</span>, <span class="hljs-string">'ü'</span>],
+            upperCase: [<span class="hljs-string">'Ç'</span>, <span class="hljs-string">'Ğ'</span>, <span class="hljs-string">'I'</span>, <span class="hljs-string">'İ'</span>, <span class="hljs-string">'Ö'</span>, <span class="hljs-string">'Ş'</span>, <span class="hljs-string">'Ü'</span>]
+        }
+    };
+
+    <span class="hljs-comment">/** UXRocket Utils object. */</span>
+    <span class="hljs-keyword">var</span> UXRocketUtils = {};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <h2 id="structral-functions">Structral Functions</h2>
+<p>__.noConflict</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-comment">/**
+     * Reverts the '__' variable to its previous value and returns a reference the UXRocket Utils.
+     *
+     * @returns {object} UXRocket Utils
+     *
+     * @examples
+     * var UXRocketUtils = __.noConflict();
+     */</span>
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">noConflict</span><span class="hljs-params">()</span></span>{
+        root.__ = previousDoubleUnderscore;
+        <span class="hljs-keyword">return</span> UXRocketUtils;
+    }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <h2 id="utils-functions">Utils Functions</h2>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <h3 id="array">Array</h3>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <p>__.find</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-comment">/**
+     * Find items from given array which ones return true from comparisor given target.
+     *
+     * @param {array} array
+     * @param {string|number|object|function|boolean|null|undefined} target
+     * @param {object} [options]
+     * @returns {array}
+     *
+     * @options
+     *
+     * &gt; searchType
+     *      Determine how function gonna search item inside array items.
+     *      type    : string | function
+     *      default : exact
+     *
+     *      values  :
+     *      -'exact'          Looks for exact matching. Will use lodash _.isEqual for comparising. (all types)
+     *      -'partial'        Will find items which has equivalent values with target. (for objects)
+     *      -'bigger'         Brings bigger numbers than given one. (for numbers)
+     *      -'smaller'        Brings smaller numbers than given one. (for numbers)
+     *      -'contains'       Check if item contains given string. (for strings)
+     *      -'containsOnly'   Item should only contain string, not start or end with it. (for strings)
+     *      -'startsWith'     Item should start with given string. (for strings)
+     *      -'endsWith'       Item should end with given string. (for strings)
+     *
+     * &gt; key
+     *      If items of array is not string and is a object, specify a key to perform search.
+     *      type    : string
+     *      default : null
+     *
+     * &gt; includeIndex
+     *      Wrap founded item with object which contains index of item and item itself.
+     *      type    : boolean
+     *      default : false
+     *
+     * &gt; standardise
+     *      Standardise item and target before comparison.
+     *      type    : boolean
+     *      default : false
+     *
+     * @examples
+     *
+     * var  dataArray   = ['cat', 'data', 'meta', 'atv'],
+     *      numberArray = [2, 4, 8, 16, 32, 64, 128, 256, 512, 1024],
+     *      objectArray = [
+     *          {value: 'data'},
+     *          {value: 'cat'},
+     *          {value: 'meta'},
+     *          {value: 'atv'}
+     *      ];
+     *      objectArray2 = [
+     *          {value: 'data', index: 0},
+     *          {value: 'cat', index: 1},
+     *          {value: 'meta', index: 2},
+     *          {value: 'atv', index: 3}
+     *      ];
+     *
+     * __.find(dataArray, 'at');
+     * //=&gt; ['cat', 'data', 'atv']
+     *
+     * __.find(numberArray, 63, {searchType: 'bigger'});
+     * //=&gt; [64, 128, 256, 512, 1024]
+     *
+     * __.find(objectArray, 'cat', {key: 'value'});
+     * //=&gt; [{value: 'cat'}]
+     *
+     * __.find(objectArray, 'cat', {key: 'value', includeIndex: true});
+     * //=&gt;[{index: 1, item: {value: 'cat'}}]
+     *
+     * __.find(objectArray2, {value: 'cat'}, {searchType: 'partial'});
+     * //=&gt; [{value: 'cat', index: 1}]
+     *
+     * __.find(objectArray2, {value: 'cat'}, {searchType: 'partial', includeIndex: true});
+     * //=&gt; [{index: 1, item: {value: 'cat', index: 1}}]
+     *
+     * __.find(numberArray, function(item){ return item &gt; 63; });
+     * //=&gt; [64, 128, 256, 512, 1024]
+     *
+     */</span>
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">find</span><span class="hljs-params">(array, target, options)</span></span>{
+        <span class="hljs-comment">/* Extend options */</span>
+        options = _.extend({
+            searchType  : <span class="hljs-string">'exact'</span>,
+            key         : <span class="hljs-literal">null</span>,
+            includeIndex: <span class="hljs-literal">false</span>,
+            standardise : <span class="hljs-literal">false</span>
+        }, options || {});
+
+        <span class="hljs-comment">/* Standardise string */</span>
+        <span class="hljs-keyword">if</span>(options.standardise){
+            target = standardiseString(target);
+        }
+
+        <span class="hljs-comment">/* Include index to search results */</span>
+        <span class="hljs-keyword">if</span>(options.includeIndex){
+            array = _.map(array, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(item, index)</span></span>{
+                <span class="hljs-keyword">return</span> {item: item, index: index};
+            });
+        }
+
+        <span class="hljs-comment">/* Actual comparisor function */</span>
+        <span class="hljs-keyword">var</span> finder = _.curry(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(comparisor, item)</span></span>{
+            <span class="hljs-comment">/* Get original item if wrapper exist */</span>
+            <span class="hljs-keyword">if</span>(options.includeIndex){
+                item = item.item;
+            }
+
+            <span class="hljs-comment">/* Use key name if exist */</span>
+            <span class="hljs-keyword">if</span>(options.key !== <span class="hljs-literal">null</span>){
+                item = item[options.key];
+            }
+
+            <span class="hljs-comment">/* Use key name if exist */</span>
+            <span class="hljs-keyword">if</span>(options.standardise){
+                item = standardiseString(item);
+            }
+
+            <span class="hljs-comment">/* Return result */</span>
+            <span class="hljs-keyword">return</span> comparisor(item, target);
+        });
+
+        <span class="hljs-comment">/* Determine search method. */</span>
+        <span class="hljs-keyword">var</span> searchMethod;
+        <span class="hljs-keyword">if</span>(type(target) === <span class="hljs-string">'function'</span>){
+            searchMethod = finder(target);
+        }<span class="hljs-keyword">else</span>{
+            <span class="hljs-keyword">switch</span>(options.searchType){
+                <span class="hljs-keyword">case</span> <span class="hljs-string">'exact'</span>:
+                    searchMethod = finder(_.isEqual);
+                    <span class="hljs-keyword">break</span>;
+                <span class="hljs-keyword">case</span> <span class="hljs-string">'partial'</span>:
+                    searchMethod = finder(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(item, target)</span></span>{
+                        <span class="hljs-keyword">return</span> _.isEqual(target, _.pick(item, _.keys(target)));
+                    });
+                    <span class="hljs-keyword">break</span>;
+                <span class="hljs-keyword">case</span> <span class="hljs-string">'bigger'</span>:
+                    searchMethod = finder(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(item, target)</span></span>{
+                        <span class="hljs-keyword">return</span> item &gt; target;
+                    });
+                    <span class="hljs-keyword">break</span>;
+                <span class="hljs-keyword">case</span> <span class="hljs-string">'smaller'</span>:
+                    searchMethod = finder(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(item, target)</span></span>{
+                        <span class="hljs-keyword">return</span> item &lt; target;
+                    });
+                    <span class="hljs-keyword">break</span>;
+                <span class="hljs-keyword">case</span> <span class="hljs-string">'contains'</span>:
+                    searchMethod = finder(contains);
+                    <span class="hljs-keyword">break</span>;
+                <span class="hljs-keyword">case</span> <span class="hljs-string">'containsOnly'</span>:
+                    searchMethod = finder(containsOnly);
+                    <span class="hljs-keyword">break</span>;
+                <span class="hljs-keyword">case</span> <span class="hljs-string">'startsWith'</span>:
+                    searchMethod = finder(startsWith);
+                    <span class="hljs-keyword">break</span>;
+                <span class="hljs-keyword">case</span> <span class="hljs-string">'endsWith'</span>:
+                    searchMethod = finder(endsWith);
+                    <span class="hljs-keyword">break</span>;
+                <span class="hljs-keyword">default</span>:
+                    <span class="hljs-keyword">return</span> array;
+            }
+        }
+
+        <span class="hljs-comment">/* Filter array */</span>
+        <span class="hljs-keyword">return</span> _.filter(array, searchMethod);
+    }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <h3 id="collection">Collection</h3>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-7">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <p>__.contains</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-comment">/**
+     * Alias for lodash contains.
+     * Checks if collection contains given item.
+     */</span>
+    <span class="hljs-keyword">var</span> contains = _.contains;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-8">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              <h3 id="dom">DOM</h3>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-9">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-9">&#182;</a>
+              </div>
+              <p>__.collectAttributes</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-comment">/**
+     * Collects attributes from element whichs starts with given prefix. (default prefix is data-)
+     *
+     * Important: The attributes which contains underscore '_' going to accept as new namespace. And values after underscore
+     * will nested under this namespace. For disabling it set options.underscoreNesting = false; Check examples for more info.
+     *
+     * @param {HTMLElement} element
+     * @param {string} prefix
+     * @param {object} [options]
+     * @returns {object} collected attributes
+     *
+     * @options
+     *
+     *
+     * @examples
+     *
+     *
+     */</span>
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">collectAttributes</span><span class="hljs-params">(element, prefix, options)</span></span>{
+        <span class="hljs-comment">/* Extend options */</span>
+        options = _.extend({
+            underscoreNesting: <span class="hljs-literal">true</span>
+        }, options || {});
+
+        <span class="hljs-comment">/* Hold attributes */</span>
+        <span class="hljs-keyword">var</span> attributes = {};
+
+        <span class="hljs-comment">/* Collect attributes */</span>
+        _.each(element.attributes, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(attribute)</span></span>{
+            <span class="hljs-comment">/* Get node info */</span>
+            <span class="hljs-keyword">var</span> nodeName = attribute.name,
+                nodeValue = attribute.value;
+
+            <span class="hljs-comment">/* Skip if prefix provided but attribute doesnt start with it. */</span>
+            <span class="hljs-keyword">if</span>(prefix &amp;&amp; !startsWith(nodeName, prefix)) <span class="hljs-keyword">return</span>;
+
+            <span class="hljs-comment">/* Underscore nesting mode. */</span>
+            <span class="hljs-keyword">if</span>(options.underscoreNesting){
+                <span class="hljs-comment">/* Keep previous namespace */</span>
+                <span class="hljs-keyword">var</span> previousNamespace = attributes;
+
+                <span class="hljs-comment">/* Split with underscore and process the list */</span>
+                _.each(nodeName.split(<span class="hljs-string">'_'</span>), <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(nestingName, index, collection)</span></span>{
+                    <span class="hljs-comment">/* Remove prefix and convert to camel case */</span>
+                    <span class="hljs-keyword">if</span>(prefix) nestingName = nestingName.replace(prefix + <span class="hljs-string">'-'</span>, <span class="hljs-string">''</span>);
+
+                    <span class="hljs-comment">/* Convert underscore-seperated name to camelCase */</span>
+                    nestingName = toCamelCase(nestingName);
+
+                    <span class="hljs-comment">/* If there is another values */</span>
+                    <span class="hljs-keyword">if</span>(index &lt; collection.length - <span class="hljs-number">1</span>){
+                        <span class="hljs-comment">/* Create name space if doesnt exist */</span>
+                        <span class="hljs-keyword">if</span>(!previousNamespace[nestingName]) previousNamespace[nestingName] = {};
+
+                        <span class="hljs-comment">/* Change previous name space. */</span>
+                        previousNamespace = previousNamespace[nestingName];
+                    }
+                    <span class="hljs-comment">/* If this is the last value. */</span>
+                    <span class="hljs-keyword">else</span>{
+                        previousNamespace[nestingName] = nodeValue;
+                    }
+                });
+            }
+            <span class="hljs-comment">/* Simple mode */</span>
+            <span class="hljs-keyword">else</span>{
+                attributes[toCamelCase(nodeName.replace(prefix + <span class="hljs-string">'-'</span>, <span class="hljs-string">''</span>))] = nodeValue;
+            }
+        });
+        <span class="hljs-comment">/* Return attributes object. */</span>
+        <span class="hljs-keyword">return</span> attributes;
+    }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-10">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-10">&#182;</a>
+              </div>
+              <h3 id="function">FUNCTION</h3>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-11">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-11">&#182;</a>
+              </div>
+              <p>__.runAsync</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-comment">/**
+     * Runs function asynchronously.
+     * If callback provided, callback gonna call with returned value from evaluated function.
+     *
+     * @param {function} func
+     * @param {function} callback
+     */</span>
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">runAsync</span><span class="hljs-params">(func, callback)</span></span>{
+        <span class="hljs-keyword">return</span> setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{
+            <span class="hljs-keyword">var</span> returnedValue = func();
+
+            <span class="hljs-comment">/* Call callback if provided with returned value. */</span>
+            <span class="hljs-keyword">if</span>(type(callback) === <span class="hljs-string">'function'</span>){
+                callback(returnedValue);
+            }
+        }, <span class="hljs-number">0</span>);
+    }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-12">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-12">&#182;</a>
+              </div>
+              <p>__.evaluateFunctionCall</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-comment">/**
+     * Evaluates function calls in correct context without using 'eval'.
+     * If callback provided, and it is afunction; options.async will set to true as default
+     * and callback gonna call with returned value from evaluated function.
+     *
+     * @param {string} functionCallString
+     * @param {function} callback
+     * @param {object} options
+     *
+     * @options
+     *
+     * &gt; async
+     *      If true, will run function asynchronously.
+     *      type    : boolean
+     *      default : false
+     *
+     * @example
+     *
+     */</span>
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">evaluateFunctionCall</span><span class="hljs-params">(functionCallString, callback, options)</span></span>{
+        <span class="hljs-comment">/* Extend options */</span>
+        options = _.extend({
+            async: type(callback) === <span class="hljs-string">'function'</span>
+        }, options || {});
+
+        <span class="hljs-comment">/* Control and Seperation RegExps */</span>
+        <span class="hljs-keyword">var</span> isFunctionCall                      = <span class="hljs-regexp">/(.*)\((.*)\)/</span>,
+            seperateParamsFromFunctionNamespace = <span class="hljs-regexp">/\((.*)\)/</span>,
+            seperateContextFromFunctionName     = <span class="hljs-regexp">/\.(?=[^.]*$)/</span>;
+
+        <span class="hljs-comment">/* Test if string is realy a function call */</span>
+        <span class="hljs-keyword">if</span>(!isFunctionCall.test(functionCallString)) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+
+        <span class="hljs-comment">/* Seperate function name from parameters. */</span>
+        <span class="hljs-keyword">var</span> seperatedCall   = functionCallString.split(seperateParamsFromFunctionNamespace),
+            functionName    = seperatedCall[<span class="hljs-number">0</span>],
+            functionContext = root,
+            parameters      = (seperatedCall[<span class="hljs-number">1</span>] ? seperatedCall[<span class="hljs-number">1</span>].split(<span class="hljs-string">','</span>) : []);
+
+        <span class="hljs-comment">/* If there is nested context in function name*/</span>
+        <span class="hljs-keyword">if</span>(contains(functionName, <span class="hljs-string">'.'</span>)){
+            <span class="hljs-comment">/* Seperate context from function name */</span>
+            <span class="hljs-keyword">var</span> seperatedContext = seperatedCall[<span class="hljs-number">0</span>].split(seperateContextFromFunctionName);
+
+            <span class="hljs-comment">/* Get correct context and function name */</span>
+            functionName     = seperatedContext[<span class="hljs-number">1</span>];
+            functionContext  = parseNesting(seperatedContext[<span class="hljs-number">0</span>]);
+        }
+
+        <span class="hljs-comment">/* Evaluater */</span>
+        <span class="hljs-keyword">var</span> evaluateFunction = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{
+            <span class="hljs-keyword">return</span> functionContext[functionName].apply(functionContext, parameters);
+        };
+
+        <span class="hljs-comment">/* Run function sync or async */</span>
+        <span class="hljs-keyword">if</span>(options.async){
+            <span class="hljs-keyword">return</span> runAsync(evaluateFunction, callback);
+        }<span class="hljs-keyword">else</span>{
+            <span class="hljs-keyword">return</span> evaluateFunction();
+        }
+    }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-13">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-13">&#182;</a>
+              </div>
+              <h3 id="regexp">RegExp</h3>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-14">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-14">&#182;</a>
+              </div>
+              <p>__.regexpEscape</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-comment">/**
+     * Escape regexp inside string.
+     *
+     * @param {string} string that contains regexp
+     * @returns {string} escaped regexp
+     *
+     * @example
+     *
+     * __.regexpEscape('.*');
+     * //=&gt; '\.\*'
+     */</span>
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">regexpEscape</span><span class="hljs-params">(string)</span></span>{
+        <span class="hljs-keyword">return</span> string.replace(<span class="hljs-regexp">/([.*+?^=!:${}()|\[\]\/\\])/g</span>, <span class="hljs-string">'\\$1'</span>);
+    }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-15">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-15">&#182;</a>
+              </div>
+              <h3 id="string">String</h3>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-16">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-16">&#182;</a>
+              </div>
+              <p>__.containsOnly</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-comment">/**
+     * Checks if string contains target but not starts or ends with it.
+     *
+     * @param {string} string
+     * @param {string} target
+     * @returns {boolean}
+     *
+     * @example
+     *
+     * __.containsOnly('data', 'at');
+     * //=&gt; true
+     *
+     * __.containsOnly('at', 'at');
+     * //=&gt; true
+     *
+     * __.containsOnly('cat', 'at');
+     * //=&gt; false
+     */</span>
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">containsOnly</span><span class="hljs-params">(string, target)</span></span>{
+        <span class="hljs-keyword">return</span> string === target || (!startsWith(string, target) &amp;&amp; !endsWith(string, target) &amp;&amp; contains(string, target));
+    }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-17">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-17">&#182;</a>
+              </div>
+              <p>__.startsWith</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-comment">/**
+     * Checks if string starts with given string target.
+     *
+     * @param string
+     * @param target
+     * @returns {boolean}
+     *
+     * @example
+     *
+     * __.startsWith('atv', 'at');
+     * //=&gt; true
+     *
+     * __.startsWith('at', 'at');
+     * //=&gt; true
+     *
+     * __.startsWith('cat', 'at');
+     * //=&gt; false
+     */</span>
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">startsWith</span><span class="hljs-params">(string, target)</span></span>{
+        <span class="hljs-keyword">return</span> string.substr(<span class="hljs-number">0</span>, target.length) === target;
+    }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-18">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-18">&#182;</a>
+              </div>
+              <p>__.endsWith</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-comment">/**
+     * Checks if string ends with target.
+     *
+     * @param {string} string
+     * @param {string} target
+     * @returns {boolean}
+     *
+     * @example
+     *
+     * __.endsWith('cat', 'at');
+     * //=&gt; true
+     *
+     * __.endsWith('at', 'at');
+     * //=&gt; true
+     *
+     * __.endsWith('atv', 'at');
+     * //=&gt; false
+     */</span>
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">endsWith</span><span class="hljs-params">(string, target)</span></span>{
+        <span class="hljs-keyword">return</span> string.substr(string.length - target.length, target.length) === target;
+    }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-19">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-19">&#182;</a>
+              </div>
+              <p>__.isUrl</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-comment">/**
+     * Checks if string is an url.
+     * http://www.regexr.com/39v08
+     *
+     * @param {url} string
+     *
+     * @example
+     *
+     *
+     */</span>
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">isUrl</span><span class="hljs-params">(string)</span></span>{
+        <span class="hljs-keyword">return</span> (<span class="hljs-keyword">new</span> <span class="hljs-built_in">RegExp</span>(
+            <span class="hljs-string">'('</span> +
+                <span class="hljs-string">'^((http|https)://)|'</span> +
+                <span class="hljs-string">'^\/[a-zA-Z0-9_]+|'</span> +
+                <span class="hljs-string">'^\\.\\.*\/[a-zA-Z0-9_]+|'</span> +
+                <span class="hljs-string">'^(([0-9]{1,3}\\.){3}([0-9]{1,3}))|'</span> +
+                <span class="hljs-string">'^(([a-zA-Z0-9_]+\\.)?[a-zA-Z0-9_]+\\.[a-zA-Z0-9_]{2,})|'</span> +
+                <span class="hljs-string">'^([a-zA-Z0-9_]*\/)+'</span> +
+            <span class="hljs-string">')'</span>
+        )).test(string);
+    }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-20">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-20">&#182;</a>
+              </div>
+              <p>__.standardiseString</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-comment">/**
+     * Standardise given string into english letters.
+     * Disallow converting lower case is optional.
+     *
+     * @param {string} string
+     * @param {boolean} dontLowerCase
+     * @returns {string} standardised string.
+     *
+     * @example
+     *
+     * __.standardiseString('Örneğin ilginçtir, müzik ruhun gıdasıdır.');
+     * //=&gt; 'ornegin ilginctir, muzik ruhun gidasidir.'
+     */</span>
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">standardiseString</span><span class="hljs-params">(string, dontLowerCase)</span></span>{
+        <span class="hljs-comment">/* Proccess standardise map */</span>
+        _.each(standardiseMap, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(replaceIt, replaceWith)</span></span>{
+            <span class="hljs-comment">/* Replace string. */</span>
+            string = replaceString(string, replaceIt, replaceWith);
+        });
+
+        <span class="hljs-comment">/* Lower case string by settings. */</span>
+        <span class="hljs-keyword">if</span>(!dontLowerCase) string = string.toLowerCase();
+
+        <span class="hljs-comment">/* Return string. */</span>
+        <span class="hljs-keyword">return</span> string;
+    }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-21">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-21">&#182;</a>
+              </div>
+              <p>__.replaceString</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-comment">/**
+     * Replace string.
+     * Supports arrays as replace map.
+     *
+     * @param {string} string
+     * @param {string|object} replaceIt
+     * @param {string|object|function} replaceWith
+     * @param {object} [options]
+     * @returns {string} replaced string
+     */</span>
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">replaceString</span><span class="hljs-params">(string, replaceIt, replaceWith, options)</span></span>{
+        <span class="hljs-comment">/* Extend options */</span>
+        options = _.extend({
+            regexp          : <span class="hljs-literal">false</span>,
+            global          : <span class="hljs-literal">true</span>,
+            caseSensitive   : <span class="hljs-literal">true</span>,
+            multiline       : <span class="hljs-literal">false</span>
+        }, options || {});
+
+        <span class="hljs-comment">/* Create regexp settings by options */</span>
+        <span class="hljs-keyword">var</span> regexpSettings = <span class="hljs-string">''</span>;
+        <span class="hljs-keyword">if</span>(options.global)
+            regexpSettings += <span class="hljs-string">'g'</span>;
+        <span class="hljs-keyword">if</span>(!options.caseSensitive)
+            regexpSettings += <span class="hljs-string">'i'</span>;
+        <span class="hljs-keyword">if</span>(options.multiline)
+            regexpSettings += <span class="hljs-string">'m'</span>;
+
+        <span class="hljs-comment">/* Replace if all items are string. */</span>
+        <span class="hljs-keyword">if</span>(type(replaceIt) === <span class="hljs-string">'string'</span> &amp;&amp; (type(replaceWith) === <span class="hljs-string">'string'</span> || type(replaceWith) === <span class="hljs-string">'function'</span>)){
+            <span class="hljs-comment">/* Escape regexp by settings. */</span>
+            <span class="hljs-keyword">if</span>(!options.regexp) replaceIt = regexpEscape(replaceIt);
+
+            <span class="hljs-comment">/* Return replaced string. */</span>
+            <span class="hljs-keyword">return</span> string.replace(<span class="hljs-keyword">new</span> <span class="hljs-built_in">RegExp</span>(replaceIt, regexpSettings), replaceWith);
+        }
+
+        <span class="hljs-comment">/* If replaceIt is an array. */</span>
+        <span class="hljs-keyword">if</span>(type(replaceIt) === <span class="hljs-string">'array'</span> &amp;&amp;
+            (type(replaceWith) === <span class="hljs-string">'array'</span> || type(replaceWith) === <span class="hljs-string">'string'</span> || type(replaceWith) === <span class="hljs-string">'function'</span>)){
+
+            <span class="hljs-comment">/* Check if replace with is an array. */</span>
+            <span class="hljs-keyword">var</span> replaceWithArray = (type(replaceWith) === <span class="hljs-string">'array'</span>);
+
+            <span class="hljs-comment">/* Process replace list. */</span>
+            _.each(replaceIt, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(value, index)</span></span>{
+                <span class="hljs-comment">/* Escape regexp by settings. */</span>
+                <span class="hljs-keyword">if</span>(!options.regexp) value = regexpEscape(value);
+
+                <span class="hljs-comment">/* If replaceWith is an array, find out counter item. */</span>
+                <span class="hljs-keyword">var</span> replaceWithItem = replaceWithArray ? replaceWith[index] : replaceWith;
+
+                <span class="hljs-comment">/* Replace string. */</span>
+                string = string.replace(<span class="hljs-keyword">new</span> <span class="hljs-built_in">RegExp</span>(value, regexpSettings), replaceWithItem);
+            });
+
+            <span class="hljs-comment">/* Return replaced string. */</span>
+            <span class="hljs-keyword">return</span> string;
+        }
+
+        <span class="hljs-comment">/* Return original string if nothing changed. */</span>
+        <span class="hljs-keyword">return</span> string;
+    }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-22">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-22">&#182;</a>
+              </div>
+              <p>__.replaceStringByPosition</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-comment">/**
+     * Replace string between start and end positions.
+     *
+     * @param {string} string
+     * @param {string} replaceWith
+     * @param {number} startPos
+     * @param {number} endPos
+     * @returns {string} replaced string
+     */</span>
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">replaceStringByPosition</span><span class="hljs-params">(string, replaceWith, startPos, endPos)</span></span>{
+        <span class="hljs-comment">/* Split text by position. */</span>
+        <span class="hljs-keyword">var</span> length = string.length,
+            before = string.substring(<span class="hljs-number">0</span>, startPos),
+            after  = string.substring(endPos, length);
+
+        <span class="hljs-comment">/* Return replaced string. */</span>
+        <span class="hljs-keyword">return</span> before + replaceWith + after;
+    }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-23">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-23">&#182;</a>
+              </div>
+              <p>__.toLowerCase</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-comment">/**
+     * Convert letters to lower case, and perform language based conversion if specified.
+     *
+     * @param {string} string
+     * @param {object} [options]
+     * @returns {string} lowerized string
+     *
+     * @options
+     *
+     * &gt; language
+     *      Which language gonna used for language based conversion.
+     *
+     *      type    : string
+     *      default : null
+     *      values  : properties of languagesCharMap
+     *
+     * @examples
+     *
+     * toLowerCase('Information Technologies');
+     * //=&gt; 'information technologies'
+     *
+     * toLowerCase('Isınma Sorunu');
+     * //=&gt; 'isınma sorunu'
+     *
+     * toLowerCase('Isınma Sorunu', {language: 'turkish'});
+     * //=&gt; 'ısınma sorunu'
+     */</span>
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">toLowerCase</span><span class="hljs-params">(string, options)</span></span>{
+        <span class="hljs-comment">/* Extend options */</span>
+        options = _.extend({
+            language: <span class="hljs-literal">null</span>
+        }, options || {});
+
+        <span class="hljs-comment">/* If language specified first perform replace, then lowerize cases. */</span>
+        <span class="hljs-keyword">if</span>(options.language){
+            <span class="hljs-keyword">var</span> map = languagesCharMap[options.language];
+            <span class="hljs-keyword">return</span> replaceString(string, map.upperCase, map.lowerCase).toLocaleLowerCase();
+        }
+
+        <span class="hljs-comment">/* If there isnt language, simply lower case string. */</span>
+        <span class="hljs-keyword">return</span> string.toLowerCase();
+    }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-24">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-24">&#182;</a>
+              </div>
+              <p>__.toUpperCase</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-comment">/**
+     * Convert letters to upper case, and perform language based conversion if specified.
+     *
+     * @param {string} string
+     * @param {object} [options]
+     * @returns {string} upperized string
+     *
+     * @options
+     *
+     * &gt; language
+     *      Which language gonna used for language based conversion.
+     *
+     *      type    : string
+     *      default : null
+     *      values  : properties of languagesCharMap
+     *
+     * @examples
+     *
+     * toUpperCase('information technologies');
+     * //=&gt; 'INFORMATION TECHNOLOGIES'
+     *
+     * toUpperCase('istanbul');
+     * //=&gt; 'ISTANBUL'
+     *
+     * toUpperCase('istanbul', {language: 'turkish'});
+     * //=&gt; 'İSTANBUL'
+     */</span>
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">toUpperCase</span><span class="hljs-params">(string, options)</span></span>{
+        <span class="hljs-comment">/* Extend options */</span>
+        options = _.extend({
+            language: <span class="hljs-literal">null</span>
+        }, options || {});
+
+        <span class="hljs-comment">/* If language specified first perform replace, then upperize cases. */</span>
+        <span class="hljs-keyword">if</span>(options.language){
+            <span class="hljs-keyword">var</span> map = languagesCharMap[options.language];
+            <span class="hljs-keyword">return</span> replaceString(string, map.lowerCase, map.upperCase).toLocaleUpperCase();
+        }
+
+        <span class="hljs-comment">/* If there isnt language, simply upper case string. */</span>
+        <span class="hljs-keyword">return</span> string.toUpperCase();
+    }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-25">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-25">&#182;</a>
+              </div>
+              <p>__.toCamelCase</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-comment">/**
+     * Converts given underscore seperated string to camel case.
+     *
+     * @param {string} string
+     * @returns {string} camelCased string.
+     *
+     * @example
+     *
+     * toCamelCase('data-source');
+     * //=&gt; 'dataSource'
+     */</span>
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">toCamelCase</span><span class="hljs-params">(string)</span></span>{
+        <span class="hljs-keyword">return</span> replaceString(toLowerCase(string), <span class="hljs-string">'-(.)'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(match, firstLetter)</span></span>{
+            <span class="hljs-keyword">return</span> toUpperCase(firstLetter);
+        }, {regexp: <span class="hljs-literal">true</span>});
+    }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-26">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-26">&#182;</a>
+              </div>
+              <p>__.toDashSeperated</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-comment">/**
+     * Converts given camelCase and PascalCase string to dash seperated string.
+     *
+     * @param {string} string
+     * @param {string} [symbol='-'] if provided gonna use instead of dash.
+     * @returns {string} dash-seperated string.
+     *
+     * @example
+     *
+     * toDashSeperated('dataSource');
+     * //=&gt; 'data-source'
+     *
+     * toDashSeperated('dataSource', '_');
+     * //=&gt; 'data_source'
+     *
+     */</span>
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">toDashSeperated</span><span class="hljs-params">(string, symbol)</span></span>{
+        <span class="hljs-comment">/* Assign default */</span>
+        symbol || (symbol = <span class="hljs-string">'-'</span>);
+
+        <span class="hljs-comment">/* Lower case first letter of string. */</span>
+        string = toLowerCase(string[<span class="hljs-number">0</span>]) + string.substr(<span class="hljs-number">1</span>);
+
+        <span class="hljs-comment">/* Return symbol-seperated string */</span>
+        <span class="hljs-keyword">return</span> replaceString(string, <span class="hljs-string">'([A-Z])'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(match, firstLetter)</span></span>{
+            <span class="hljs-keyword">return</span> symbol + firstLetter.toLowerCase();
+        }, {regexp: <span class="hljs-literal">true</span>});
+    }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-27">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-27">&#182;</a>
+              </div>
+              <h3 id="misc">Misc</h3>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-28">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-28">&#182;</a>
+              </div>
+              <p>__.type</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-comment">/**
+     * Returns exact type of item.
+     * @param item
+     * @returns {string} type of item
+     */</span>
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">type</span><span class="hljs-params">(item)</span></span>{
+        <span class="hljs-keyword">return</span> <span class="hljs-built_in">Object</span>.prototype.toString.call(item).toLowerCase().match(<span class="hljs-regexp">/\[object (.*)\]/</span>)[<span class="hljs-number">1</span>];
+    }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-29">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-29">&#182;</a>
+              </div>
+              <p>__.parseNesting</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-comment">/**
+     * Going to parse given dot orienting nesting and return finded value.
+     *
+     * @param {string} nestingExpression
+     * @param {object} [context=root]
+     * @returns {*}
+     *
+     * @example
+     *
+     * window.stuff = {
+     *      nested: {
+     *          deep: {
+     *              wow: 'such'
+     *          }
+     *      }
+     * }
+     *
+     * __.parseNesting('stuff.nested.deep.wow');
+     * //=&gt; 'such'
+     *
+     * __.parseNesting('nested.deep.wow', stuff);
+     * //=&gt; 'such'
+     */</span>
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">parseNesting</span><span class="hljs-params">(nestingExpression, context)</span></span>{
+        <span class="hljs-comment">/* If context not provided, take root as context (root is window in browser) */</span>
+        context || (context = root);
+
+        <span class="hljs-comment">/* Dig into nesting. */</span>
+        <span class="hljs-keyword">return</span> _.reduce(nestingExpression.split(<span class="hljs-string">'.'</span>), <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(parent, child)</span></span>{
+            <span class="hljs-keyword">return</span> (parent &amp;&amp; parent[child] ? parent[child] : <span class="hljs-literal">undefined</span>);
+        }, context);
+    }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-30">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-30">&#182;</a>
+              </div>
+              <h2 id="export">Export</h2>
+<p>Export utils.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+    <span class="hljs-comment">/* Structural */</span>
+    UXRocketUtils.noConflict                = noConflict;
+
+    <span class="hljs-comment">/* Array */</span>
+    UXRocketUtils.find                      = find;
+
+    <span class="hljs-comment">/* DOM */</span>
+    UXRocketUtils.collectAttributes         = collectAttributes;
+
+    <span class="hljs-comment">/* Functions */</span>
+    UXRocketUtils.runAsync                  = runAsync;
+    UXRocketUtils.evaluateFunctionCall      = evaluateFunctionCall;
+
+    <span class="hljs-comment">/* Regexp */</span>
+    UXRocketUtils.regexpEscape              = regexpEscape;
+
+    <span class="hljs-comment">/* String */</span>
+    UXRocketUtils.contains                  = contains;
+    UXRocketUtils.containsOnly              = containsOnly;
+    UXRocketUtils.startsWith                = startsWith;
+    UXRocketUtils.endsWith                  = endsWith;
+    UXRocketUtils.isUrl                     = isUrl;
+    UXRocketUtils.standardiseString         = standardiseString;
+    UXRocketUtils.replaceString             = replaceString;
+    UXRocketUtils.replaceStringByPosition   = replaceStringByPosition;
+    UXRocketUtils.toLowerCase               = toLowerCase;
+    UXRocketUtils.toUpperCase               = toUpperCase;
+    UXRocketUtils.toCamelCase               = toCamelCase;
+    UXRocketUtils.toDashSeperated           = toDashSeperated;
+
+    <span class="hljs-comment">/* Misc */</span>
+    UXRocketUtils.type                      = type;
+    UXRocketUtils.parseNesting              = parseNesting;
+
+    <span class="hljs-comment">/* Return utils. */</span>
+    <span class="hljs-keyword">return</span> UXRocketUtils;
+
+})(<span class="hljs-keyword">this</span>);</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>

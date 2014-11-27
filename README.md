@@ -64,7 +64,7 @@ Please check [CHANGELOG.md]
 [release packages]:https://github.com/uxrocket/uxrocket.utils/releases
 [lodash]:https://github.com/lodash/lodash
 [Türkçe Dökümantasyon]:https://github.com/uxrocket/uxrocket.utils/blob/master/docs/turkish/README.md
-[MIT]: https://github.com/uxrocket/uxrocket.utils/blob/master/LICENSE.md
+[MIT]: https://github.com/uxrocket/uxrocket.utils/blob/master/LICENSE
 [TODOS.md]: https://github.com/uxrocket/uxrocket.utils/blob/master/TODOS.md
 [CHANGELOG.md]: https://github.com/uxrocket/uxrocket.utils/blob/master/CHANGELOG.md
 [English]:https://github.com/uxrocket/uxrocket.utils/blob/master/docs/english/README.md

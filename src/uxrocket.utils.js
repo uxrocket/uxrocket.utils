@@ -847,22 +847,56 @@
         return (value && type(value) === 'object' && value.hasOwnProperty('__value__')) ? value : new UXRocketUtilsWrapper(value);
     };
 
+    /* Actual chain wrapper. */
     function UXRocketUtilsWrapper(value){
         this.__value__ = value;
     }
 
+    /* Wrap actual functions to they can work with chained values and returns chainable or bare values. */
+    function chainWrapper(continueChaining){
+        forOwn(UXRocketUtils, function(method, name){
+            if(!UXRocketUtils.prototype[name]){
+                UXRocketUtils.prototype[name] = function(){
+                    /* Arguments have to start with actual value. */
+                    var args = [this.__value__];
+
+                    /* Add arguments to after */
+                    args.push.apply(args, arguments);
+
+                    /* Get results */
+                    var result = method.apply(UXRocketUtils, args);
+
+                    /* If chaining has to continue, assign value and return wrapper itself. */
+                    if(continueChaining){
+                        this.__value__ = result;
+                        return this;
+                    }
+
+                    /* If we dont want chaining return bare results. */
+                    else{
+                        return result;
+                    }
+                };
+            }
+        });
+    }
+
+    /* Inherit wrapper from utils constructor. */
     UXRocketUtilsWrapper.prototype = UXRocketUtils.prototype;
 
+    /* Custom correction of .toString() */
     function wrapperToString(){
         /*jshint validthis:true */
         return String(this.__value__);
     }
 
+    /* Custom correction of .valueOf() */
     function wrapperValueOf(){
         /*jshint validthis:true */
         return this.__value__;
     }
 
+    /* Correct built-in .toString(), .valueOf() and add custom .value() method. */
     UXRocketUtils.prototype.toString    = wrapperToString;
     UXRocketUtils.prototype.value       = wrapperValueOf;
     UXRocketUtils.prototype.valueOf     = wrapperValueOf;
@@ -883,14 +917,7 @@
      * for they can work with chained values and
      * return chainable values.
      */
-    forOwn(UXRocketUtils, function(method, name){
-        UXRocketUtils.prototype[name] = function(){
-            var args = [this.__value__];
-            args.push.apply(args, arguments);
-            this.__value__ = method.apply(UXRocketUtils, args);
-            return this;
-        };
-    });
+    chainWrapper(true);
 
     /* Not Chainable Methods */
     UXRocketUtils.contains                  = contains;
@@ -910,15 +937,7 @@
      * for they can work with chained values, but
      * these functions will return bare values.
      */
-    forOwn(UXRocketUtils, function(method, name){
-        if(!UXRocketUtils.prototype[name]){
-            UXRocketUtils.prototype[name] = function(){
-                var args = [this.__value__];
-                args.push.apply(args, arguments);
-                return method.apply(UXRocketUtils, args);
-            };
-        }
-    });
+    chainWrapper(false);
 
     /* Return utils. */
     return UXRocketUtils;

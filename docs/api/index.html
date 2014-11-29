@@ -1207,22 +1207,56 @@
         <span class="hljs-keyword">return</span> (value &amp;&amp; type(value) === <span class="hljs-string">'object'</span> &amp;&amp; value.hasOwnProperty(<span class="hljs-string">'__value__'</span>)) ? value : <span class="hljs-keyword">new</span> UXRocketUtilsWrapper(value);
     };
 
+    <span class="hljs-comment">/* Actual chain wrapper. */</span>
     <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">UXRocketUtilsWrapper</span><span class="hljs-params">(value)</span></span>{
         <span class="hljs-keyword">this</span>.__value__ = value;
     }
 
+    <span class="hljs-comment">/* Wrap actual functions to they can work with chained values and returns chainable or bare values. */</span>
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">chainWrapper</span><span class="hljs-params">(continueChaining)</span></span>{
+        forOwn(UXRocketUtils, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(method, name)</span></span>{
+            <span class="hljs-keyword">if</span>(!UXRocketUtils.prototype[name]){
+                UXRocketUtils.prototype[name] = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{
+                    <span class="hljs-comment">/* Arguments have to start with actual value. */</span>
+                    <span class="hljs-keyword">var</span> args = [<span class="hljs-keyword">this</span>.__value__];
+
+                    <span class="hljs-comment">/* Add arguments to after */</span>
+                    args.push.apply(args, <span class="hljs-built_in">arguments</span>);
+
+                    <span class="hljs-comment">/* Get results */</span>
+                    <span class="hljs-keyword">var</span> result = method.apply(UXRocketUtils, args);
+
+                    <span class="hljs-comment">/* If chaining has to continue, assign value and return wrapper itself. */</span>
+                    <span class="hljs-keyword">if</span>(continueChaining){
+                        <span class="hljs-keyword">this</span>.__value__ = result;
+                        <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
+                    }
+
+                    <span class="hljs-comment">/* If we dont want chaining return bare results. */</span>
+                    <span class="hljs-keyword">else</span>{
+                        <span class="hljs-keyword">return</span> result;
+                    }
+                };
+            }
+        });
+    }
+
+    <span class="hljs-comment">/* Inherit wrapper from utils constructor. */</span>
     UXRocketUtilsWrapper.prototype = UXRocketUtils.prototype;
 
+    <span class="hljs-comment">/* Custom correction of .toString() */</span>
     <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">wrapperToString</span><span class="hljs-params">()</span></span>{
         <span class="hljs-comment">/*jshint validthis:true */</span>
         <span class="hljs-keyword">return</span> <span class="hljs-built_in">String</span>(<span class="hljs-keyword">this</span>.__value__);
     }
 
+    <span class="hljs-comment">/* Custom correction of .valueOf() */</span>
     <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">wrapperValueOf</span><span class="hljs-params">()</span></span>{
         <span class="hljs-comment">/*jshint validthis:true */</span>
         <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.__value__;
     }
 
+    <span class="hljs-comment">/* Correct built-in .toString(), .valueOf() and add custom .value() method. */</span>
     UXRocketUtils.prototype.toString    = wrapperToString;
     UXRocketUtils.prototype.value       = wrapperValueOf;
     UXRocketUtils.prototype.valueOf     = wrapperValueOf;
@@ -1243,14 +1277,7 @@
      * for they can work with chained values and
      * return chainable values.
      */</span>
-    forOwn(UXRocketUtils, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(method, name)</span></span>{
-        UXRocketUtils.prototype[name] = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{
-            <span class="hljs-keyword">var</span> args = [<span class="hljs-keyword">this</span>.__value__];
-            args.push.apply(args, <span class="hljs-built_in">arguments</span>);
-            <span class="hljs-keyword">this</span>.__value__ = method.apply(UXRocketUtils, args);
-            <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
-        };
-    });
+    chainWrapper(<span class="hljs-literal">true</span>);
 
     <span class="hljs-comment">/* Not Chainable Methods */</span>
     UXRocketUtils.contains                  = contains;
@@ -1270,15 +1297,7 @@
      * for they can work with chained values, but
      * these functions will return bare values.
      */</span>
-    forOwn(UXRocketUtils, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(method, name)</span></span>{
-        <span class="hljs-keyword">if</span>(!UXRocketUtils.prototype[name]){
-            UXRocketUtils.prototype[name] = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{
-                <span class="hljs-keyword">var</span> args = [<span class="hljs-keyword">this</span>.__value__];
-                args.push.apply(args, <span class="hljs-built_in">arguments</span>);
-                <span class="hljs-keyword">return</span> method.apply(UXRocketUtils, args);
-            };
-        }
-    });
+    chainWrapper(<span class="hljs-literal">false</span>);
 
     <span class="hljs-comment">/* Return utils. */</span>
     <span class="hljs-keyword">return</span> UXRocketUtils;

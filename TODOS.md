@@ -1,5 +1,4 @@
-- Make utils chainable
-
 - Create bigger, smaller, even, odd functions.
-
-- Write documentation for new functions
+- Create isXXX alias from lodash.
+- Write inline documentation for new functions.
+- Write tests for chainable feature.

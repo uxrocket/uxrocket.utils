@@ -98,9 +98,6 @@
             }
         };
 
-        /** UXRocket Utils object. */
-        var UXRocketUtils = {};
-
         // ## Structral Functions
         // __.noConflict
         /**
@@ -202,7 +199,7 @@
          */
         function find(array, target, options){
             /* Extend options */
-            options = _.extend({
+            options = extend({
                 searchType  : 'exact',
                 key         : null,
                 includeIndex: false,
@@ -216,13 +213,13 @@
 
             /* Include index to search results */
             if(options.includeIndex){
-                array = _.map(array, function(item, index){
+                array = map(array, function(item, index){
                     return {item: item, index: index};
                 });
             }
 
             /* Actual comparisor function */
-            var finder = _.curry(function(comparisor, item){
+            var finder = curry(function(comparisor, item){
                 /* Get original item if wrapper exist */
                 if(options.includeIndex){
                     item = item.item;
@@ -249,11 +246,11 @@
             }else{
                 switch(options.searchType){
                     case 'exact':
-                        searchMethod = finder(_.isEqual);
+                        searchMethod = finder(isEqual);
                         break;
                     case 'partial':
                         searchMethod = finder(function(item, target){
-                            return _.isEqual(target, _.pick(item, _.keys(target)));
+                            return isEqual(target, pick(item, keys(target)));
                         });
                         break;
                     case 'bigger':
@@ -284,17 +281,10 @@
             }
 
             /* Filter array */
-            return _.filter(array, searchMethod);
+            return filter(array, searchMethod);
         }
 
         // ### Collection
-
-        // __.contains
-        /**
-         * Alias for lodash contains.
-         * Checks if collection contains given item.
-         */
-        var contains = _.contains;
 
         // ### DOM
 
@@ -319,7 +309,7 @@
          */
         function collectAttributes(element, prefix, options){
             /* Extend options */
-            options = _.extend({
+            options = extend({
                 underscoreNesting: true
             }, options || {});
 
@@ -327,7 +317,7 @@
             var attributes = {};
 
             /* Collect attributes */
-            _.each(element.attributes, function(attribute){
+            each(element.attributes, function(attribute){
                 /* Get node info */
                 var nodeName = attribute.name,
                     nodeValue = attribute.value;
@@ -341,7 +331,7 @@
                     var previousNamespace = attributes;
 
                     /* Split with underscore and process the list */
-                    _.each(nodeName.split('_'), function(nestingName, index, collection){
+                    each(nodeName.split('_'), function(nestingName, index, collection){
                         /* Remove prefix and convert to camel case */
                         if(prefix) nestingName = nestingName.replace(prefix + '-', '');
 
@@ -414,7 +404,7 @@
          */
         function evaluateFunctionCall(functionCallString, callback, options){
             /* Extend options */
-            options = _.extend({
+            options = extend({
                 async: type(callback) === 'function'
             }, options || {});
 
@@ -584,7 +574,7 @@
          */
         function standardiseString(string, dontLowerCase){
             /* Proccess standardise map */
-            _.each(standardiseMap, function(replaceIt, replaceWith){
+            each(standardiseMap, function(replaceIt, replaceWith){
                 /* Replace string. */
                 string = replaceString(string, replaceIt, replaceWith);
             });
@@ -609,7 +599,7 @@
          */
         function replaceString(string, replaceIt, replaceWith, options){
             /* Extend options */
-            options = _.extend({
+            options = extend({
                 regexp          : false,
                 global          : true,
                 caseSensitive   : true,
@@ -642,7 +632,7 @@
                 var replaceWithArray = (type(replaceWith) === 'array');
 
                 /* Process replace list. */
-                _.each(replaceIt, function(value, index){
+                each(replaceIt, function(value, index){
                     /* Escape regexp by settings. */
                     if(!options.regexp) value = regexpEscape(value);
 
@@ -711,7 +701,7 @@
          */
         function toLowerCase(string, options){
             /* Extend options */
-            options = _.extend({
+            options = extend({
                 language: null
             }, options || {});
 
@@ -755,7 +745,7 @@
          */
         function toUpperCase(string, options){
             /* Extend options */
-            options = _.extend({
+            options = extend({
                 language: null
             }, options || {});
 
@@ -858,51 +848,111 @@
             context || (context = root);
 
             /* Dig into nesting. */
-            return _.reduce(nestingExpression.split('.'), function(parent, child){
+            return reduce(nestingExpression.split('.'), function(parent, child){
                 return (parent && parent[child] ? parent[child] : undefined);
             }, context);
         }
 
-        // ## Export
-        // Export utils.
+        // ## Export & Architecture
 
-        /* Structural */
-        UXRocketUtils.noConflict                = noConflict;
+        /**
+         * Lodash Aliases
+         * Check lodash documentation for explanations.
+         */
+        var contains    = _.contains,
+            curry       = _.curry,
+            each        = _.each,
+            extend      = _.extend,
+            filter      = _.filter,
+            forOwn      = _.forOwn,
+            isEqual     = _.isEqual,
+            keys        = _.keys,
+            map         = _.map,
+            pick        = _.pick,
+            reduce      = _.reduce;
 
-        /* Array */
-        UXRocketUtils.find                      = find;
+        /**
+         * Creates an UXRocketUtils object, which wraps given value to enable chaining.
+         */
+        var UXRocketUtils = function(value){
+            return (value && type(value) === 'object' && value.hasOwnProperty('__value__')) ? value : new UXRocketUtilsWrapper(value);
+        };
 
-        /* DOM */
+        function UXRocketUtilsWrapper(value){
+            this.__value__ = value;
+        }
+
+        UXRocketUtilsWrapper.prototype = UXRocketUtils.prototype;
+
+        function wrapperToString(){
+            /*jshint validthis:true */
+            return String(this.__value__);
+        }
+
+        function wrapperValueOf(){
+            /*jshint validthis:true */
+            return this.__value__;
+        }
+
+        UXRocketUtils.prototype.toString    = wrapperToString;
+        UXRocketUtils.prototype.value       = wrapperValueOf;
+        UXRocketUtils.prototype.valueOf     = wrapperValueOf;
+
+        /* Chainable Methods */
         UXRocketUtils.collectAttributes         = collectAttributes;
-
-        /* Functions */
-        UXRocketUtils.runAsync                  = runAsync;
-        UXRocketUtils.evaluateFunctionCall      = evaluateFunctionCall;
-
-        /* Regexp */
-        UXRocketUtils.regexpEscape              = regexpEscape;
-
-        /* String */
-        UXRocketUtils.contains                  = contains;
-        UXRocketUtils.containsOnly              = containsOnly;
-        UXRocketUtils.startsWith                = startsWith;
-        UXRocketUtils.endsWith                  = endsWith;
-        UXRocketUtils.isUrl                     = isUrl;
-        UXRocketUtils.standardiseString         = standardiseString;
+        UXRocketUtils.find                      = find;
         UXRocketUtils.replaceString             = replaceString;
         UXRocketUtils.replaceStringByPosition   = replaceStringByPosition;
-        UXRocketUtils.toLowerCase               = toLowerCase;
-        UXRocketUtils.toUpperCase               = toUpperCase;
+        UXRocketUtils.standardiseString         = standardiseString;
         UXRocketUtils.toCamelCase               = toCamelCase;
         UXRocketUtils.toDashSeperated           = toDashSeperated;
+        UXRocketUtils.toLowerCase               = toLowerCase;
+        UXRocketUtils.toUpperCase               = toUpperCase;
 
-        /* Misc */
-        UXRocketUtils.type                      = type;
+        /**
+         * Wrap chainable methods on prototype level
+         * for they can work with chained values and
+         * return chainable values.
+         */
+        forOwn(UXRocketUtils, function(method, name){
+            UXRocketUtils.prototype[name] = function(){
+                var args = [this.__value__];
+                args.push.apply(args, arguments);
+                this.__value__ = method.apply(UXRocketUtils, args);
+                return this;
+            };
+        });
+
+        /* Not Chainable Methods */
+        UXRocketUtils.contains                  = contains;
+        UXRocketUtils.containsOnly              = containsOnly;
+        UXRocketUtils.endsWith                  = endsWith;
+        UXRocketUtils.evaluateFunctionCall      = evaluateFunctionCall;
+        UXRocketUtils.isUrl                     = isUrl;
+        UXRocketUtils.noConflict                = noConflict;
         UXRocketUtils.parseNesting              = parseNesting;
+        UXRocketUtils.regexpEscape              = regexpEscape;
+        UXRocketUtils.runAsync                  = runAsync;
+        UXRocketUtils.startsWith                = startsWith;
+        UXRocketUtils.type                      = type;
+
+        /**
+         * Wrap non-chainable methods on protoype level
+         * for they can work with chained values, but
+         * these functions will return bare values.
+         */
+        forOwn(UXRocketUtils, function(method, name){
+            if(!UXRocketUtils.prototype[name]){
+                UXRocketUtils.prototype[name] = function(){
+                    var args = [this.__value__];
+                    args.push.apply(args, arguments);
+                    return method.apply(UXRocketUtils, args);
+                };
+            }
+        });
 
         /* Return utils. */
         return UXRocketUtils;
-
     })(this);;
     return __;
 }));
@@ -911,7 +961,7 @@
 /**
  * @license
  * Lo-Dash 2.4.1 (Custom Build) <http://lodash.com/>
- * Build: `lodash exports="commonjs,node" include="contains,curry,each,extend,filter,keys,isEqual,map,pick,reduce" moduleId="lodash" --output dist/vendors/lodash.custom.js`
+ * Build: `lodash exports="commonjs,node" include="contains,curry,each,extend,filter,forOwn,keys,isEqual,map,pick,reduce" moduleId="lodash" --output dist/vendors/lodash.custom.js`
  * Copyright 2012-2013 The Dojo Foundation <http://dojofoundation.org/>
  * Based on Underscore.js 1.5.2 <http://underscorejs.org/LICENSE>
  * Copyright 2009-2013 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
@@ -2236,6 +2286,29 @@
   });
 
   /**
+   * Iterates over own enumerable properties of an object, executing the callback
+   * for each property. The callback is bound to `thisArg` and invoked with three
+   * arguments; (value, key, object). Callbacks may exit iteration early by
+   * explicitly returning `false`.
+   *
+   * @static
+   * @memberOf _
+   * @type Function
+   * @category Objects
+   * @param {Object} object The object to iterate over.
+   * @param {Function} [callback=identity] The function called per iteration.
+   * @param {*} [thisArg] The `this` binding of `callback`.
+   * @returns {Object} Returns `object`.
+   * @example
+   *
+   * _.forOwn({ '0': 'zero', '1': 'one', 'length': 2 }, function(num, key) {
+   *   console.log(key);
+   * });
+   * // => logs '0', '1', and 'length' (property order is not guaranteed across environments)
+   */
+  var forOwn = createIterator(eachIteratorOptions, forOwnIteratorOptions);
+
+  /**
    * Performs a deep comparison between two values to determine if they are
    * equivalent to each other. If a callback is provided it will be executed
    * to compare values. If the callback returns `undefined` comparisons will
@@ -2970,6 +3043,7 @@
   lodash.filter = filter;
   lodash.forEach = forEach;
   lodash.forIn = forIn;
+  lodash.forOwn = forOwn;
   lodash.keys = keys;
   lodash.map = map;
   lodash.pick = pick;

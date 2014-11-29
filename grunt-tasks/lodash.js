@@ -12,6 +12,7 @@ module.exports = function(grunt){
                     'each',
                     'extend',
                     'filter',
+                    'forOwn',
                     'keys',
                     'isEqual',
                     'map',

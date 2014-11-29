@@ -833,6 +833,7 @@
         each        = _.each,
         extend      = _.extend,
         filter      = _.filter,
+        forOwn      = _.forOwn,
         isEqual     = _.isEqual,
         keys        = _.keys,
         map         = _.map,
@@ -843,12 +844,31 @@
      * Creates an UXRocketUtils object, which wraps given value to enable chaining.
      */
     var UXRocketUtils = function(value){
-
+        return (value && type(value) === 'object' && value.hasOwnProperty('__value__')) ? value : new UXRocketUtilsWrapper(value);
     };
+
+    function UXRocketUtilsWrapper(value){
+        this.__value__ = value;
+    }
+
+    UXRocketUtilsWrapper.prototype = UXRocketUtils.prototype;
+
+    function wrapperToString(){
+        /*jshint validthis:true */
+        return String(this.__value__);
+    }
+
+    function wrapperValueOf(){
+        /*jshint validthis:true */
+        return this.__value__;
+    }
+
+    UXRocketUtils.prototype.toString    = wrapperToString;
+    UXRocketUtils.prototype.value       = wrapperValueOf;
+    UXRocketUtils.prototype.valueOf     = wrapperValueOf;
 
     /* Chainable Methods */
     UXRocketUtils.collectAttributes         = collectAttributes;
-    UXRocketUtils.contains                  = contains;
     UXRocketUtils.find                      = find;
     UXRocketUtils.replaceString             = replaceString;
     UXRocketUtils.replaceStringByPosition   = replaceStringByPosition;
@@ -858,7 +878,22 @@
     UXRocketUtils.toLowerCase               = toLowerCase;
     UXRocketUtils.toUpperCase               = toUpperCase;
 
+    /**
+     * Wrap chainable methods on prototype level
+     * for they can work with chained values and
+     * return chainable values.
+     */
+    forOwn(UXRocketUtils, function(method, name){
+        UXRocketUtils.prototype[name] = function(){
+            var args = [this.__value__];
+            args.push.apply(args, arguments);
+            this.__value__ = method.apply(UXRocketUtils, args);
+            return this;
+        };
+    });
+
     /* Not Chainable Methods */
+    UXRocketUtils.contains                  = contains;
     UXRocketUtils.containsOnly              = containsOnly;
     UXRocketUtils.endsWith                  = endsWith;
     UXRocketUtils.evaluateFunctionCall      = evaluateFunctionCall;
@@ -870,7 +905,21 @@
     UXRocketUtils.startsWith                = startsWith;
     UXRocketUtils.type                      = type;
 
+    /**
+     * Wrap non-chainable methods on protoype level
+     * for they can work with chained values, but
+     * these functions will return bare values.
+     */
+    forOwn(UXRocketUtils, function(method, name){
+        if(!UXRocketUtils.prototype[name]){
+            UXRocketUtils.prototype[name] = function(){
+                var args = [this.__value__];
+                args.push.apply(args, arguments);
+                return method.apply(UXRocketUtils, args);
+            };
+        }
+    });
+
     /* Return utils. */
     return UXRocketUtils;
-
 })(this);

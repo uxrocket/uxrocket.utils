@@ -1,6 +1,6 @@
 {
   "name": "uxrocket.utils",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "Missing utils/helpers library for javascript.",
   "main": "dist/uxrocket.utils.js",
   "scripts": {

@@ -1,3 +1,7 @@
+#0.2.0
+#### New Feature:
+- Chaining
+
 #0.1.0
 
 #### New Functions:

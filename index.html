@@ -97,10 +97,7 @@
             lowerCase: [<span class="hljs-string">'ç'</span>, <span class="hljs-string">'ğ'</span>, <span class="hljs-string">'ı'</span>, <span class="hljs-string">'i'</span>, <span class="hljs-string">'ö'</span>, <span class="hljs-string">'ş'</span>, <span class="hljs-string">'ü'</span>],
             upperCase: [<span class="hljs-string">'Ç'</span>, <span class="hljs-string">'Ğ'</span>, <span class="hljs-string">'I'</span>, <span class="hljs-string">'İ'</span>, <span class="hljs-string">'Ö'</span>, <span class="hljs-string">'Ş'</span>, <span class="hljs-string">'Ü'</span>]
         }
-    };
-
-    <span class="hljs-comment">/** UXRocket Utils object. */</span>
-    <span class="hljs-keyword">var</span> UXRocketUtils = {};</pre></div></div>
+    };</pre></div></div>
             
         </li>
         
@@ -249,7 +246,7 @@
      */</span>
     <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">find</span><span class="hljs-params">(array, target, options)</span></span>{
         <span class="hljs-comment">/* Extend options */</span>
-        options = _.extend({
+        options = extend({
             searchType  : <span class="hljs-string">'exact'</span>,
             key         : <span class="hljs-literal">null</span>,
             includeIndex: <span class="hljs-literal">false</span>,
@@ -263,13 +260,13 @@
 
         <span class="hljs-comment">/* Include index to search results */</span>
         <span class="hljs-keyword">if</span>(options.includeIndex){
-            array = _.map(array, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(item, index)</span></span>{
+            array = map(array, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(item, index)</span></span>{
                 <span class="hljs-keyword">return</span> {item: item, index: index};
             });
         }
 
         <span class="hljs-comment">/* Actual comparisor function */</span>
-        <span class="hljs-keyword">var</span> finder = _.curry(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(comparisor, item)</span></span>{
+        <span class="hljs-keyword">var</span> finder = curry(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(comparisor, item)</span></span>{
             <span class="hljs-comment">/* Get original item if wrapper exist */</span>
             <span class="hljs-keyword">if</span>(options.includeIndex){
                 item = item.item;
@@ -296,11 +293,11 @@
         }<span class="hljs-keyword">else</span>{
             <span class="hljs-keyword">switch</span>(options.searchType){
                 <span class="hljs-keyword">case</span> <span class="hljs-string">'exact'</span>:
-                    searchMethod = finder(_.isEqual);
+                    searchMethod = finder(isEqual);
                     <span class="hljs-keyword">break</span>;
                 <span class="hljs-keyword">case</span> <span class="hljs-string">'partial'</span>:
                     searchMethod = finder(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(item, target)</span></span>{
-                        <span class="hljs-keyword">return</span> _.isEqual(target, _.pick(item, _.keys(target)));
+                        <span class="hljs-keyword">return</span> isEqual(target, pick(item, keys(target)));
                     });
                     <span class="hljs-keyword">break</span>;
                 <span class="hljs-keyword">case</span> <span class="hljs-string">'bigger'</span>:
@@ -331,7 +328,7 @@
         }
 
         <span class="hljs-comment">/* Filter array */</span>
-        <span class="hljs-keyword">return</span> _.filter(array, searchMethod);
+        <span class="hljs-keyword">return</span> filter(array, searchMethod);
     }</pre></div></div>
             
         </li>
@@ -356,15 +353,9 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-7">&#182;</a>
               </div>
-              <p>__.contains</p>
+              <h3 id="dom">DOM</h3>
 
             </div>
-            
-            <div class="content"><div class='highlight'><pre>    <span class="hljs-comment">/**
-     * Alias for lodash contains.
-     * Checks if collection contains given item.
-     */</span>
-    <span class="hljs-keyword">var</span> contains = _.contains;</pre></div></div>
             
         </li>
         
@@ -374,19 +365,6 @@
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-8">&#182;</a>
-              </div>
-              <h3 id="dom">DOM</h3>
-
-            </div>
-            
-        </li>
-        
-        
-        <li id="section-9">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-9">&#182;</a>
               </div>
               <p>__.collectAttributes</p>
 
@@ -412,7 +390,7 @@
      */</span>
     <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">collectAttributes</span><span class="hljs-params">(element, prefix, options)</span></span>{
         <span class="hljs-comment">/* Extend options */</span>
-        options = _.extend({
+        options = extend({
             underscoreNesting: <span class="hljs-literal">true</span>
         }, options || {});
 
@@ -420,7 +398,7 @@
         <span class="hljs-keyword">var</span> attributes = {};
 
         <span class="hljs-comment">/* Collect attributes */</span>
-        _.each(element.attributes, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(attribute)</span></span>{
+        each(element.attributes, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(attribute)</span></span>{
             <span class="hljs-comment">/* Get node info */</span>
             <span class="hljs-keyword">var</span> nodeName = attribute.name,
                 nodeValue = attribute.value;
@@ -434,7 +412,7 @@
                 <span class="hljs-keyword">var</span> previousNamespace = attributes;
 
                 <span class="hljs-comment">/* Split with underscore and process the list */</span>
-                _.each(nodeName.split(<span class="hljs-string">'_'</span>), <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(nestingName, index, collection)</span></span>{
+                each(nodeName.split(<span class="hljs-string">'_'</span>), <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(nestingName, index, collection)</span></span>{
                     <span class="hljs-comment">/* Remove prefix and convert to camel case */</span>
                     <span class="hljs-keyword">if</span>(prefix) nestingName = nestingName.replace(prefix + <span class="hljs-string">'-'</span>, <span class="hljs-string">''</span>);
 
@@ -467,11 +445,11 @@
         </li>
         
         
-        <li id="section-10">
+        <li id="section-9">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-10">&#182;</a>
+                <a class="pilcrow" href="#section-9">&#182;</a>
               </div>
               <h3 id="function">FUNCTION</h3>
 
@@ -480,11 +458,11 @@
         </li>
         
         
-        <li id="section-11">
+        <li id="section-10">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-11">&#182;</a>
+                <a class="pilcrow" href="#section-10">&#182;</a>
               </div>
               <p>__.runAsync</p>
 
@@ -511,11 +489,11 @@
         </li>
         
         
-        <li id="section-12">
+        <li id="section-11">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-12">&#182;</a>
+                <a class="pilcrow" href="#section-11">&#182;</a>
               </div>
               <p>__.evaluateFunctionCall</p>
 
@@ -542,7 +520,7 @@
      */</span>
     <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">evaluateFunctionCall</span><span class="hljs-params">(functionCallString, callback, options)</span></span>{
         <span class="hljs-comment">/* Extend options */</span>
-        options = _.extend({
+        options = extend({
             async: type(callback) === <span class="hljs-string">'function'</span>
         }, options || {});
 
@@ -586,11 +564,11 @@
         </li>
         
         
-        <li id="section-13">
+        <li id="section-12">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-13">&#182;</a>
+                <a class="pilcrow" href="#section-12">&#182;</a>
               </div>
               <h3 id="regexp">RegExp</h3>
 
@@ -599,11 +577,11 @@
         </li>
         
         
-        <li id="section-14">
+        <li id="section-13">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-14">&#182;</a>
+                <a class="pilcrow" href="#section-13">&#182;</a>
               </div>
               <p>__.regexpEscape</p>
 
@@ -627,11 +605,11 @@
         </li>
         
         
-        <li id="section-15">
+        <li id="section-14">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-15">&#182;</a>
+                <a class="pilcrow" href="#section-14">&#182;</a>
               </div>
               <h3 id="string">String</h3>
 
@@ -640,11 +618,11 @@
         </li>
         
         
-        <li id="section-16">
+        <li id="section-15">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-16">&#182;</a>
+                <a class="pilcrow" href="#section-15">&#182;</a>
               </div>
               <p>__.containsOnly</p>
 
@@ -675,11 +653,11 @@
         </li>
         
         
-        <li id="section-17">
+        <li id="section-16">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-17">&#182;</a>
+                <a class="pilcrow" href="#section-16">&#182;</a>
               </div>
               <p>__.startsWith</p>
 
@@ -710,11 +688,11 @@
         </li>
         
         
-        <li id="section-18">
+        <li id="section-17">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-18">&#182;</a>
+                <a class="pilcrow" href="#section-17">&#182;</a>
               </div>
               <p>__.endsWith</p>
 
@@ -745,11 +723,11 @@
         </li>
         
         
-        <li id="section-19">
+        <li id="section-18">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-19">&#182;</a>
+                <a class="pilcrow" href="#section-18">&#182;</a>
               </div>
               <p>__.isUrl</p>
 
@@ -781,11 +759,11 @@
         </li>
         
         
-        <li id="section-20">
+        <li id="section-19">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-20">&#182;</a>
+                <a class="pilcrow" href="#section-19">&#182;</a>
               </div>
               <p>__.standardiseString</p>
 
@@ -806,7 +784,7 @@
      */</span>
     <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">standardiseString</span><span class="hljs-params">(string, dontLowerCase)</span></span>{
         <span class="hljs-comment">/* Proccess standardise map */</span>
-        _.each(standardiseMap, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(replaceIt, replaceWith)</span></span>{
+        each(standardiseMap, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(replaceIt, replaceWith)</span></span>{
             <span class="hljs-comment">/* Replace string. */</span>
             string = replaceString(string, replaceIt, replaceWith);
         });
@@ -821,11 +799,11 @@
         </li>
         
         
-        <li id="section-21">
+        <li id="section-20">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-21">&#182;</a>
+                <a class="pilcrow" href="#section-20">&#182;</a>
               </div>
               <p>__.replaceString</p>
 
@@ -843,7 +821,7 @@
      */</span>
     <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">replaceString</span><span class="hljs-params">(string, replaceIt, replaceWith, options)</span></span>{
         <span class="hljs-comment">/* Extend options */</span>
-        options = _.extend({
+        options = extend({
             regexp          : <span class="hljs-literal">false</span>,
             global          : <span class="hljs-literal">true</span>,
             caseSensitive   : <span class="hljs-literal">true</span>,
@@ -876,7 +854,7 @@
             <span class="hljs-keyword">var</span> replaceWithArray = (type(replaceWith) === <span class="hljs-string">'array'</span>);
 
             <span class="hljs-comment">/* Process replace list. */</span>
-            _.each(replaceIt, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(value, index)</span></span>{
+            each(replaceIt, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(value, index)</span></span>{
                 <span class="hljs-comment">/* Escape regexp by settings. */</span>
                 <span class="hljs-keyword">if</span>(!options.regexp) value = regexpEscape(value);
 
@@ -898,11 +876,11 @@
         </li>
         
         
-        <li id="section-22">
+        <li id="section-21">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-22">&#182;</a>
+                <a class="pilcrow" href="#section-21">&#182;</a>
               </div>
               <p>__.replaceStringByPosition</p>
 
@@ -930,11 +908,11 @@
         </li>
         
         
-        <li id="section-23">
+        <li id="section-22">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-23">&#182;</a>
+                <a class="pilcrow" href="#section-22">&#182;</a>
               </div>
               <p>__.toLowerCase</p>
 
@@ -969,7 +947,7 @@
      */</span>
     <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">toLowerCase</span><span class="hljs-params">(string, options)</span></span>{
         <span class="hljs-comment">/* Extend options */</span>
-        options = _.extend({
+        options = extend({
             language: <span class="hljs-literal">null</span>
         }, options || {});
 
@@ -986,11 +964,11 @@
         </li>
         
         
-        <li id="section-24">
+        <li id="section-23">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-24">&#182;</a>
+                <a class="pilcrow" href="#section-23">&#182;</a>
               </div>
               <p>__.toUpperCase</p>
 
@@ -1025,7 +1003,7 @@
      */</span>
     <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">toUpperCase</span><span class="hljs-params">(string, options)</span></span>{
         <span class="hljs-comment">/* Extend options */</span>
-        options = _.extend({
+        options = extend({
             language: <span class="hljs-literal">null</span>
         }, options || {});
 
@@ -1042,11 +1020,11 @@
         </li>
         
         
-        <li id="section-25">
+        <li id="section-24">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-25">&#182;</a>
+                <a class="pilcrow" href="#section-24">&#182;</a>
               </div>
               <p>__.toCamelCase</p>
 
@@ -1072,11 +1050,11 @@
         </li>
         
         
-        <li id="section-26">
+        <li id="section-25">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-26">&#182;</a>
+                <a class="pilcrow" href="#section-25">&#182;</a>
               </div>
               <p>__.toDashSeperated</p>
 
@@ -1114,11 +1092,11 @@
         </li>
         
         
-        <li id="section-27">
+        <li id="section-26">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-27">&#182;</a>
+                <a class="pilcrow" href="#section-26">&#182;</a>
               </div>
               <h3 id="misc">Misc</h3>
 
@@ -1127,11 +1105,11 @@
         </li>
         
         
-        <li id="section-28">
+        <li id="section-27">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-28">&#182;</a>
+                <a class="pilcrow" href="#section-27">&#182;</a>
               </div>
               <p>__.type</p>
 
@@ -1149,11 +1127,11 @@
         </li>
         
         
-        <li id="section-29">
+        <li id="section-28">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-29">&#182;</a>
+                <a class="pilcrow" href="#section-28">&#182;</a>
               </div>
               <p>__.parseNesting</p>
 
@@ -1187,7 +1165,7 @@
         context || (context = root);
 
         <span class="hljs-comment">/* Dig into nesting. */</span>
-        <span class="hljs-keyword">return</span> _.reduce(nestingExpression.split(<span class="hljs-string">'.'</span>), <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(parent, child)</span></span>{
+        <span class="hljs-keyword">return</span> reduce(nestingExpression.split(<span class="hljs-string">'.'</span>), <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(parent, child)</span></span>{
             <span class="hljs-keyword">return</span> (parent &amp;&amp; parent[child] ? parent[child] : <span class="hljs-literal">undefined</span>);
         }, context);
     }</pre></div></div>
@@ -1195,55 +1173,134 @@
         </li>
         
         
-        <li id="section-30">
+        <li id="section-29">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-30">&#182;</a>
+                <a class="pilcrow" href="#section-29">&#182;</a>
               </div>
-              <h2 id="export">Export</h2>
-<p>Export utils.</p>
+              <h2 id="export-architecture">Export &amp; Architecture</h2>
 
             </div>
             
             <div class="content"><div class='highlight'><pre>
-    <span class="hljs-comment">/* Structural */</span>
-    UXRocketUtils.noConflict                = noConflict;
+    <span class="hljs-comment">/**
+     * Lodash Aliases
+     * Check lodash documentation for explanations.
+     */</span>
+    <span class="hljs-keyword">var</span> contains    = _.contains,
+        curry       = _.curry,
+        each        = _.each,
+        extend      = _.extend,
+        filter      = _.filter,
+        forOwn      = _.forOwn,
+        isEqual     = _.isEqual,
+        keys        = _.keys,
+        map         = _.map,
+        pick        = _.pick,
+        reduce      = _.reduce;
 
-    <span class="hljs-comment">/* Array */</span>
-    UXRocketUtils.find                      = find;
+    <span class="hljs-comment">/**
+     * Creates an UXRocketUtils object, which wraps given value to enable chaining.
+     */</span>
+    <span class="hljs-keyword">var</span> UXRocketUtils = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(value)</span></span>{
+        <span class="hljs-keyword">return</span> (value &amp;&amp; type(value) === <span class="hljs-string">'object'</span> &amp;&amp; value.hasOwnProperty(<span class="hljs-string">'__value__'</span>)) ? value : <span class="hljs-keyword">new</span> UXRocketUtilsWrapper(value);
+    };
 
-    <span class="hljs-comment">/* DOM */</span>
+    <span class="hljs-comment">/* Actual chain wrapper. */</span>
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">UXRocketUtilsWrapper</span><span class="hljs-params">(value)</span></span>{
+        <span class="hljs-keyword">this</span>.__value__ = value;
+    }
+
+    <span class="hljs-comment">/* Wrap actual functions to they can work with chained values and returns chainable or bare values. */</span>
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">chainWrapper</span><span class="hljs-params">(continueChaining)</span></span>{
+        forOwn(UXRocketUtils, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(method, name)</span></span>{
+            <span class="hljs-keyword">if</span>(!UXRocketUtils.prototype[name]){
+                UXRocketUtils.prototype[name] = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{
+                    <span class="hljs-comment">/* Arguments have to start with actual value. */</span>
+                    <span class="hljs-keyword">var</span> args = [<span class="hljs-keyword">this</span>.__value__];
+
+                    <span class="hljs-comment">/* Add arguments to after */</span>
+                    args.push.apply(args, <span class="hljs-built_in">arguments</span>);
+
+                    <span class="hljs-comment">/* Get results */</span>
+                    <span class="hljs-keyword">var</span> result = method.apply(UXRocketUtils, args);
+
+                    <span class="hljs-comment">/* If chaining has to continue, assign value and return wrapper itself. */</span>
+                    <span class="hljs-keyword">if</span>(continueChaining){
+                        <span class="hljs-keyword">this</span>.__value__ = result;
+                        <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
+                    }
+
+                    <span class="hljs-comment">/* If we dont want chaining return bare results. */</span>
+                    <span class="hljs-keyword">else</span>{
+                        <span class="hljs-keyword">return</span> result;
+                    }
+                };
+            }
+        });
+    }
+
+    <span class="hljs-comment">/* Inherit wrapper from utils constructor. */</span>
+    UXRocketUtilsWrapper.prototype = UXRocketUtils.prototype;
+
+    <span class="hljs-comment">/* Custom correction of .toString() */</span>
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">wrapperToString</span><span class="hljs-params">()</span></span>{
+        <span class="hljs-comment">/*jshint validthis:true */</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-built_in">String</span>(<span class="hljs-keyword">this</span>.__value__);
+    }
+
+    <span class="hljs-comment">/* Custom correction of .valueOf() */</span>
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">wrapperValueOf</span><span class="hljs-params">()</span></span>{
+        <span class="hljs-comment">/*jshint validthis:true */</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.__value__;
+    }
+
+    <span class="hljs-comment">/* Correct built-in .toString(), .valueOf() and add custom .value() method. */</span>
+    UXRocketUtils.prototype.toString    = wrapperToString;
+    UXRocketUtils.prototype.value       = wrapperValueOf;
+    UXRocketUtils.prototype.valueOf     = wrapperValueOf;
+
+    <span class="hljs-comment">/* Chainable Methods */</span>
     UXRocketUtils.collectAttributes         = collectAttributes;
-
-    <span class="hljs-comment">/* Functions */</span>
-    UXRocketUtils.runAsync                  = runAsync;
-    UXRocketUtils.evaluateFunctionCall      = evaluateFunctionCall;
-
-    <span class="hljs-comment">/* Regexp */</span>
-    UXRocketUtils.regexpEscape              = regexpEscape;
-
-    <span class="hljs-comment">/* String */</span>
-    UXRocketUtils.contains                  = contains;
-    UXRocketUtils.containsOnly              = containsOnly;
-    UXRocketUtils.startsWith                = startsWith;
-    UXRocketUtils.endsWith                  = endsWith;
-    UXRocketUtils.isUrl                     = isUrl;
-    UXRocketUtils.standardiseString         = standardiseString;
+    UXRocketUtils.find                      = find;
     UXRocketUtils.replaceString             = replaceString;
     UXRocketUtils.replaceStringByPosition   = replaceStringByPosition;
-    UXRocketUtils.toLowerCase               = toLowerCase;
-    UXRocketUtils.toUpperCase               = toUpperCase;
+    UXRocketUtils.standardiseString         = standardiseString;
     UXRocketUtils.toCamelCase               = toCamelCase;
     UXRocketUtils.toDashSeperated           = toDashSeperated;
+    UXRocketUtils.toLowerCase               = toLowerCase;
+    UXRocketUtils.toUpperCase               = toUpperCase;
 
-    <span class="hljs-comment">/* Misc */</span>
-    UXRocketUtils.type                      = type;
+    <span class="hljs-comment">/**
+     * Wrap chainable methods on prototype level
+     * for they can work with chained values and
+     * return chainable values.
+     */</span>
+    chainWrapper(<span class="hljs-literal">true</span>);
+
+    <span class="hljs-comment">/* Not Chainable Methods */</span>
+    UXRocketUtils.contains                  = contains;
+    UXRocketUtils.containsOnly              = containsOnly;
+    UXRocketUtils.endsWith                  = endsWith;
+    UXRocketUtils.evaluateFunctionCall      = evaluateFunctionCall;
+    UXRocketUtils.isUrl                     = isUrl;
+    UXRocketUtils.noConflict                = noConflict;
     UXRocketUtils.parseNesting              = parseNesting;
+    UXRocketUtils.regexpEscape              = regexpEscape;
+    UXRocketUtils.runAsync                  = runAsync;
+    UXRocketUtils.startsWith                = startsWith;
+    UXRocketUtils.type                      = type;
+
+    <span class="hljs-comment">/**
+     * Wrap non-chainable methods on protoype level
+     * for they can work with chained values, but
+     * these functions will return bare values.
+     */</span>
+    chainWrapper(<span class="hljs-literal">false</span>);
 
     <span class="hljs-comment">/* Return utils. */</span>
     <span class="hljs-keyword">return</span> UXRocketUtils;
-
 })(<span class="hljs-keyword">this</span>);</pre></div></div>
             
         </li>

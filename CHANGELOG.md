@@ -1,10 +1,9 @@
 #0.2.0
-#### New Feature:
+**New Feature:**
 - Chaining
 
 #0.1.0
-
-#### New Functions:
+**New Functions:**
 - Structural
   - __.noConflict
 - Array

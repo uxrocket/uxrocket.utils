@@ -2,6 +2,7 @@
 .DS_Store
 .idea
 *.log
+*.md
 
 # Packages
 node_modules
@@ -24,5 +25,3 @@ test
 bower.json
 gruntfile.js
 LICENSE
-README.md
-TODOS.md

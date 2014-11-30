@@ -16,6 +16,7 @@
   "license": "MIT",
   "ignore": [
     "**/.*",
+    "*.md",
     "node_modules",
     "bower_components",
     "test",
@@ -26,9 +27,7 @@
     "src",
     "build",
     "gruntfile.js",
-    "package.json",
-    "README.md",
-    "TODOS.md"
+    "package.json"
   ],
   "main": "dist/uxrocket.utils.js",
   "dependencies": {
